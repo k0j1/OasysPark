@@ -1,0 +1,26 @@
+{
+    "name": "MCHスカウター",
+    "manifest_version": 3,
+    "version": "0.1.0.2",
+    "description": "マイクリ機能拡張",
+    "permissions": [
+        "activeTab",
+        "scripting",
+        "storage",
+        "tabs",
+        "clipboardWrite",
+        "contextMenus"
+    ],
+    "icons": {
+        "64": "MCHScouter.png"
+    },
+    "content_security_policy": {
+        "script-src": ["self", "unsafe-inline"]
+    },
+    "action": {
+        "default_popup": "popup/popup.html"
+    },
+    "background": {
+        "service_worker": "background.js"
+    }    
+}

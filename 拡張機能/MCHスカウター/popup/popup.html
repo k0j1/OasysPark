@@ -1,0 +1,362 @@
+﻿<!DOCTYPE html>
+<html><head>
+<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>
+<meta content='IE=11' http-equiv='X-UA-Compatible'>
+<link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+<script src="marked.min.js"></script>
+<title>INDEX</title>
+<style>
+	body{width:300px;height:600px;font-size:12px;}
+	button{border: none;color:white;padding:5px 32px;text-align:center;font-size:16px;margin-bottom:2px;}
+    /*h2{position:relative;padding:0rem 1rem;border-bottom:6px solid #094;}
+      h2:before{position:absolute;bottom:-6px;left:0;width:20%;height:6px;content:"";background:#00cc5b;}*/
+    h1{padding:0.25rem 1rem;color:#fff;background:#094;-webkit-box-shadow:5px 5px 0 #007032;box-shadow:5px 5px #007032;width:90%;left:0;margin-left:-10px;}
+    h2{padding:0.25rem 1rem;border-top:2px solid #000;border-bottom:2px solid #000;left:0;margin-left:-10px;}
+    h2#redmine::before{content:"";display:inline-block;width:24px;height:16px;background-image:url("http://redmine.tksf.jdl.co.jp/redmine/favicon.ico?1586192449");background-size:cover;background-repeat:no-repeat;margin-right:5px;}
+    h2#dialy::before{content:"";display:inline-block;width:16px;height:16px;background-image:url("http://redmine.tksf.jdl.co.jp/redmine/images/edit.png");background-size:cover;background-repeat:no-repeat;margin-right:5px;}
+    h2#mattermost::before{content:"";display:inline-block;width:16px;height:16px;background-image:url("http://mattermost.tksf.jdl.co.jp/static/files/787db8d8b82538cc1d5e8bcb8c21722d.png");background-size:cover;background-repeat:no-repeat;margin-right:5px;}
+
+    
+
+    .tab-wrap{ display: flex; flex-wrap: wrap; margin: 20px 0; }
+    .tab-wrap:after{ content:""; width:100%; height: 3px; background: DarkGreen; display: block; order: -1; }
+    .tab-label{ color:white; background:#00b359; font-weight: bold; text-shadow: 0 -1px 0 rgba(0,0,0,.2); white-space: nowrap; text-align: center; padding: 10px .5em; order: -1; position: relative; z-index: 1; cursor: pointer; border-radius: 5px 5px 0 0; flex: 1; }
+    .tab-label:not(:last-of-type) { margin-right:5px; }
+    .tab-content{ width:100%; height:0; overflow:hidden; opacity:0; background-color:lavenderblush; }
+    .tab-switch:checked+.tab-label{ background:DarkGreen; }
+    .tab-switch:checked+.tab-label+.tab-content{ height:auto; overflow:auto; padding:15px; opacity:1; transition:0.2s opacity; box-shadow:0 0 3px rgba(0,0,0,.2); }
+    .tab-switch{ display:none; }
+
+    .input-save{ color:white; background:#00b359; border:1px solid DarkGreen; font-weight: bold; font-size:12px; }
+    .output-label{ color:black; background:rgba(128,128,128,.2); text-shadow: 0 -1px 0 rgba(0,0,0,.8); white-space: nowrap; text-align: center; padding: 1px 5px 1px 5px; order: -1; position: relative; z-index: 1; cursor: pointer; flex: 1; border:1px solid #aaa; }
+    .output-switch:checked+.output-label{ color:white; background:DarkGreen; border:1px solid DarkGreen; font-weight: bold; }
+    div#text-outp{ display:none; }
+    div#text-outp-html{ display:none; }
+    button#memo-save { margin-left: 180px; position: relative; overflow:auto; padding:0 8px 0 8px; opacity:1; transition:0.2s opacity; box-shadow:0 0 3px rgba(0,0,0,.2); margin-top:-2px; }
+    label#memo-output-mark { margin-left: 108px; }
+    input#memo-output-mark:checked ~ div#text-outp{ display:block; position: relative; width:90%;height:200px; overflow:auto; padding:10px; opacity:1; transition:0.2s opacity; box-shadow:0 0 3px rgba(0,0,0,.2); }
+    input#memo-output-html:checked ~ div#text-outp-html{ display:block; position: relative; width:90%;height:200px; overflow:auto; padding:10px; opacity:1; transition:0.2s opacity; box-shadow:0 0 3px rgba(0,0,0,.2); }
+    .output-switch{ display:none; }
+
+    .switch-button { position:relative; margin-left:5px; width:120px; height:40px; }
+    .switch-button input[type="radio"] { display:none; }
+    .switch-button label { display:block; position:absolute; top:0; bottom:0; left:0; right:0; text-align:center; line-height:40px; font-size:12pt; font-weight:bold; border:2px solid #ccc; }
+    .switch-button #redmine1on +label { right:50%; border-radius:6px 0 0 6px; background:#eee; color:#666; border-left:none; }
+    .switch-button #redmine1on:checked +label { background:linear-gradient(180deg,#00b359,#006633,#00b359); color:#fff; text-shadow:1px 1px 1px #333; }
+    .switch-button #redmine1off +label { left:50%; border-radius:0 6px 6px 0; background:#eee; color:#666; border-left:none; }
+    .switch-button #redmine1off:checked +label { background:linear-gradient(175deg,#ccc,#999,#ccc); color:#fff; text-shadow:1px 1px 1px #333; }
+    .switch-button #dialy1on +label { right:50%; border-radius:6px 0 0 6px; background:#eee; color:#666; border-left:none; }
+    .switch-button #dialy1on:checked +label { background:linear-gradient(180deg,#00b359,#006633,#00b359); color:#fff; text-shadow:1px 1px 1px #333; }
+    .switch-button #dialy1off +label { left:50%; border-radius:0 6px 6px 0; background:#eee; color:#666; border-left:none; }
+    .switch-button #dialy1off:checked +label { background:linear-gradient(175deg,#ccc,#999,#ccc); color:#fff; text-shadow:1px 1px 1px #333; }
+    .switch-button #matter1on +label { right:50%; border-radius:6px 0 0 6px; background:#eee; color:#666; border-left:none; }
+    .switch-button #matter1on:checked +label { background:linear-gradient(180deg,#00b359,#006633,#00b359); color:#fff; text-shadow:1px 1px 1px #333; }
+    .switch-button #matter1off +label { left:50%; border-radius:0 6px 6px 0; background:#eee; color:#666; border-left:none; }
+    .switch-button #matter1off:checked +label { background:linear-gradient(175deg,#ccc,#999,#ccc); color:#fff; text-shadow:1px 1px 1px #333; }
+    .switch-button #matter2on +label { right:50%; border-radius:6px 0 0 6px; background:#eee; color:#666; border-left:none; }
+    .switch-button #matter2on:checked +label { background:linear-gradient(180deg,#00b359,#006633,#00b359); color:#fff; text-shadow:1px 1px 1px #333; }
+    .switch-button #matter2off +label { left:50%; border-radius:0 6px 6px 0; background:#eee; color:#666; border-left:none; }
+    .switch-button #matter2off:checked +label { background:linear-gradient(175deg,#ccc,#999,#ccc); color:#fff; text-shadow:1px 1px 1px #333; }
+
+    /*.memo-card { overflow:hidden; border-radius: 8px; box-shadow: 2px 2px 6px rgba(0,0,0,.4); margin-bottom: 10px; padding: 8px; }*/
+    /*.memo-card { overflow:hidden; border-radius: 2px; box-shadow: 2px 2px 6px rgba(0,0,0,.4); margin-bottom: 10px; padding: 8px; }*/
+    .memo-card { position: relative; padding: 5px; box-shadow: 0 0 10px #444; background-color: #eef6ee; margin-bottom: 1em; overflow:auto; }
+    .memo-card::before{ position:absolute;top:0;left:0;bottom:0;right:0;background-image:linear-gradient(135deg, DarkGreen 0 1.5rem, transparent 2.0rem); content:""; }
+    .memo-card::after{ position:absolute; top:0.35rem; left:0; color:white; font-size:0.6rem; transform:rotate(-45deg);text-transform:uppercase;text-align:center; content:"memo"; }
+    .memo-card ul.btn_list { list-style: none; margin: 2px; padding: 0; margin-left:200px; position:absolute; }
+    .memo-card ul.btn_list li { display: inline-block; vertical-align: top; background-color: #ccc; width:15px; height:15px; }
+    .memo-card ul.btn_list li { border: 1px solid #888; border-radius: 2px; padding: 2px 5px; position: relative; right: 0; top: -4px; white-space: nowrap; z-index: 6; }
+    #memo-content i.memo-date { margin-left: 50px; }
+
+    #text-memo{width:95%;height:200px;}
+    #text-outp{width:95%;height:200px;}
+    #test-html{width:95%;height:200px;}
+    #test-area{width:95%;height:200px;}
+
+    #test-replace-pre{width:95%;height:150px;}
+    #test-replace-post{width:95%;height:150px;}
+
+    .toast{ visibility: hidden; max-width: 50%; margin: auto; background-color: #000; color: #fff; text-align: center; border-radius: 5px; padding: 10px; position: fixed; z-index: 99; right: 5px; bottom:15px; }
+    .show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
+    @keyframes fadein{
+        from {bottom:-15px; opacity:0;}
+        to {bottom:15px; opacity:1;}
+    }
+    @keyframes fadeout{
+        from {bottom:15px; opacity:1;}
+        to {bottom:-15px; opacity:0;}
+    }
+
+    #main{ max-width: 260px;margin: 0 auto; outline:none; box-sizing:border-box; text-align:center; }
+    #today_fortune{ display:none; }
+
+    .userid_box
+    {
+        color:white;
+        display: flex; /*アイコン、テキストボックスを調整する*/
+        align-items: center; /*アイコン、テキストボックスを縦方向の中心に*/
+        justify-content: center; /*アイコン、テキストボックスを横方向の中心に*/
+        width: 260px;
+        height: 50px;
+        border-radius: 5px;
+        border: 1px solid lightgray;
+    }
+
+    .userid_inner
+    {
+        width: 100%;
+        height: 100%;
+        background-color: transparent; /*.password_boxの枠線お角一部被るため透明に*/
+        position: relative;
+    }
+
+    #userID{
+        position: absolute;
+        z-index: 1; /*.password_stringよりも上に配置*/
+        color:black;
+        text-align:left;
+        height: 100%;
+        width: 100%;
+        top: 0; left: 0; bottom: 0; right: 0;
+        border: none; /*枠線非表示*/
+        outline: none; /*フォーカス時の枠線非表示*/
+        padding: 0 10px;
+        font-size: 12px;
+        background-color: transparent; /*後ろの.password_stringを見せるため*/
+        box-sizing: border-box; /*横幅の解釈をpadding, borderまでとする*/
+    }
+
+    .userid_string{
+        position: absolute;
+        height: 100%;
+        width: 240px; /*文字列分の長さ*/
+        top: 0; left: 0; bottom: 0; right: 0;
+        padding-left: 10px; /*position: absolute;でのmarginは親要素はみ出す*/
+        font-size: 16px;
+        line-height: 50px; /*文字列を縦方向にmiddleに見せるため*/
+        background-color: transparent;
+        color: #80868b;
+        box-sizing: border-box; /*横幅の解釈をpadding, borderまでとする*/
+        transition: all 0.2s;
+        -webkit-transition: all 0.2s;
+    }
+
+    /*アニメーション*/
+    #userID:not(:placeholder-shown) + .userid_string,
+    #userID:focus + .userid_string
+    {
+        color: black;
+        font-size: 10px;
+        line-height: 10px;
+        width: 150px;
+        height: 10px;
+        padding: 0 2px;
+        background-color: lavenderblush;
+        transform:translate3d(5px, -6px, 0);
+    }
+
+    .main_header {
+        position: sticky;
+        height: 60px;
+        top: 0px;
+        z-index: 1100;
+        background: #141416;
+    }
+
+    .css-1r51x5v {
+        display: -webkit-inline-box;
+        display: -webkit-inline-flex;
+        display: -ms-inline-flexbox;
+        display: inline-flex;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        -ms-appearance: none;
+        appearance: none;
+        -webkit-align-items: center;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        -webkit-justify-content: center;
+        justify-content: center;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        position: relative;
+        white-space: nowrap;
+        vertical-align: middle;
+        outline: 2px solid transparent;
+        outline-offset: 2px;
+        width: auto;
+        font-family: Sen,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+        font-weight: 700;
+        line-height: 1.14;
+        transition-property: background-color,border-color,color,fill,stroke,opacity,box-shadow,transform;
+        transition-duration: 200ms;
+        height: 3rem;
+        min-width: 3rem;
+        -webkit-padding-start: 1.5rem;
+        padding-inline-start: 1.5rem;
+        -webkit-padding-end: 1.5rem;
+        padding-inline-end: 1.5rem;
+        padding: 0px;
+        font-size: 1.5rem;
+    }
+
+    .css-ip97q7 {
+        opacity: 1;
+        border: 0;
+        border-color: inherit;
+        border-style: solid;
+        border-bottom-width: 1px;
+        width: 100%;
+    }
+
+    hr {
+        border-top-width: 1px;
+        box-sizing: content-box;
+        margin: 0;
+        height: 0;
+        color: inherit;
+        overflow: visible;
+        display: block;
+        unicode-bidi: isolate;
+        margin-block-start: 0.5em;
+        margin-block-end: 0.5em;
+        margin-inline-start: auto;
+        margin-inline-end: auto;
+    }
+
+
+</style>
+</head><body>
+
+<div class="tab-wrap">
+    <div id="toast" class="toast">コピーしました</div>
+
+    <input id="TAB01" type="radio" name="TAB" class="tab-switch" checked="checked" />
+    <label class="tab-label" for="TAB01">マイクリ拡張</label>
+    <div class="tab-content">
+        <h2 id="mattermost">エクステ</h2>
+        <h3>❒スカウターEffect設定</h3>
+        <div class="switch-button" id="makeImg">
+            <input type="radio" name="matter1radio" id="matter1on" checked="">
+            <label for="matter1on">ON</label>
+            <input type="radio" name="matter1radio" id="matter1off">
+            <label for="matter1off">OFF</label>
+        </div>
+    </div>
+
+    <input id="TAB02" type="radio" name="TAB" class="tab-switch" />
+    <label class="tab-label" for="TAB02">ユーザー情報</label>
+    <div class="tab-content">
+        <!--<img src="https://www.takahara-books.com/Image/MCH/banner.png" width=260px/>-->
+
+        <div id="main">    
+            <!-- 接続ボタン -->
+            <!-- 
+            <button class="enableEthereumButton"><img src="https://www.takahara-books.com/Image/MCH/connect.png" width=120px></button>
+            <div style="font-size:9px;">※メタマスクからETHアドレスをよみこみます</div>
+            <h3 id="errConnectText"></h3>
+            -->
+            <div id="user_id">
+            <div class="userid_box">
+                <div class="userid_inner">
+                    <input id="userID" type="text" maxlength=42 size=42 placeholder=" ">
+                    <div class="userid_string">ユーザーID or アドレス(0x)</div>
+                </div>
+            </div>
+            <input id="get_id" type="image" src="https://www.takahara-books.com/Image/MCH/kensaku.png" alt="検索" width="80px"/>
+            <div style="font-size:9px;">※ユーザーID/ETHアドレスからマイクリ情報取得</div>
+            <br>
+            <br>
+            </div>
+            
+            <div id="today_fortune"></div>
+            <br>
+            <br>
+            
+            <OwnHeroHeader></OwnHeroHeader>
+            
+            <OwnHeroData></OwnHeroData>
+            
+            <br>
+            
+            <OwnExtHeader></OwnExtHeader>
+            
+            <OwnExtData></OwnExtData>        
+        </div>
+    
+    </div>
+
+    <input id="TAB03" type="radio" name="TAB" class="tab-switch" />
+    <label class="tab-label" for="TAB03">メモ</label>
+    <div class="tab-content">
+        input:
+        <button class="input-save" id="memo-save">SAVE</button>
+        <textarea id="text-memo">
+        </textarea>
+        <hr>
+        output:
+        <input id="memo-output-mark" type="radio" name="memo-output" class="output-switch" checked=""/>
+        <label class="output-label" for="memo-output-mark" id="memo-output-mark">Markdown</label>
+        <input id="memo-output-html" type="radio" name="memo-output" class="output-switch" />
+        <label class="output-label" for="memo-output-html" id="memo-output-html">Html</label>
+        <div id="text-outp">
+        </div>
+        <div id="text-outp-html">
+        </div>
+        <hr>
+        <br>
+        <div id="memos"></div>
+    </div>
+
+    <!--
+    <input id="TAB04" type="radio" name="TAB" class="tab-switch" />
+    <label class="tab-label" for="TAB04">その他</label>
+    <div class="tab-content">
+        <h1>ツールＤＬ</h1>
+        <h2>電子申告用</h2>
+        <UL>
+            <LI><a href="../tool/電子証明書.zip" download="電子証明書.zip">電子証明書一式</a>
+            <LI><a href="../tool/送信試験用サーバー設定ツール.zip" download="送信試験用サーバー設定ツール.zip">送信試験用サーバー設定ツール</a>
+        </UL>
+        <h2>電子申告用（開発向け）</h2>
+        <UL>
+            <LI><a href="../tool/所内LANダミーサーバー設定ツール.zip" download="所内LANダミーサーバー設定ツール.zip">所内LANダミーサーバー設定ツール</a>
+            <LI><a href="../tool/地方税基本情報ファイル生成ツール_ver.2.2.exe" download="地方税基本情報ファイル生成ツール_ver.2.2.exe">地方税基本情報ファイル生成ツール</a>
+            <LI><a href="../tool/JetMakedStateCalc.exe" download="JetMakedStateCalc.exe">作成フラグ値確認ツール</a>
+            <LI><a href="../tool/JetStatsLogAnalyzeTool.exe" download="JetStatsLogAnalyzeTool.exe">STATSログ確認ツール</a>
+            <LI><a href="../tool/SchemaCheck.zip" download="SchemaCheck.zip">スキーマチェックツール</a>
+            <LI><a href="../tool/JetCheckReceiveData.exe" download="JetCheckReceiveData.exe">受信データチェックツール</a>
+            <LI><a href="../tool/JetFileManageCheckTool.exe" download="JetFileManageCheckTool.exe">管理情報チェックツール</a>
+            <LI><a href="../tool/SubInfo内容確認ツール.exe" download="SubInfo内容確認ツール.exe">SubInfo内容確認ツール</a>
+            <LI><a href="../tool/jetpwdclear-jdlmode.ini" download="jetpwdclear-jdlmode.ini">パスワード突破iniファイル</a>
+            <LI><a href="../tool/jetax_log_fast_tool.bat" download="jetax_log_fast_tool.bat">jetax_log_fast回収バッチファイル</a>
+        </UL>
+        <h2>ＪＤＬツール</h2>
+        <UL>
+            <LI><a href="../tool/utility99.zip" download="utility99.zip">utility99</a>
+        </UL>
+        <h2>一般ツール</h2>
+        <UL>
+            <LI><a href="../tool/k2e10419.zip" download="k2e10419.zip">k2エディタ</a>
+            <LI><a href="../tool/pgAdmin3.zip" download="pgAdmin3.zip">pgAdmin3(ＤＢ接続ツール)</a>
+            <LI><a href="../tool/teraterm.zip" download="teraterm.zip">teraterm(サーバー接続ツール)</a>
+            <LI><a href="../tool/uwsc5302.zip" download="uwsc5302.zip">UWSC(自動テストツール)</a>
+            <LI><a href="../tool/windiff.zip" download="windiff.zip">windiff(比較ツール)</a>
+            <LI><a href="../tool/depends22_x86.zip" download="depends22_x86.zip">depends22_x86(依存関係確認ツール)</a>
+        </UL>
+    </div>
+    -->
+</div>
+
+
+<hr>
+
+
+<script src="popup.js"></script>
+
+</body></html>
