@@ -1,28 +1,13 @@
 // 設定SAVE
 function save_options() {
-	let swRedmineID = getCheckedID("redmine1radio");
-	let swDialyID = getCheckedID("dialy1radio");
-	let swMattermostID1 = getCheckedID("matter1radio");
-	let swMattermostID2 = getCheckedID("matter2radio");
-	let bExtRedmine = (swRedmineID === "redmine1on") ? true : false;
-	let bExtDialy = (swDialyID === "dialy1on") ? true : false;
-	let bExtMatterNotify = (swMattermostID1 === "matter1on") ? true : false;
-	let bExtMatterLeftMenu = (swMattermostID2 === "matter2on") ? true : false;
+	let swMchInventoryEffectID1 = getCheckedID("mch1radio");
+	let bExtMchInventoryEffectNotify = (swMchInventoryEffectID1 === "mch1on") ? true : false;
 	chrome.storage.sync.set({
-		redmine1id: swRedmineID,
-		dialy1id: swDialyID,
-		matter1id: swMattermostID1,
-		matter2id: swMattermostID2,
-		extend_redmine: bExtRedmine,
-		extend_dialy: bExtDialy,
-		extend_mattermost_notify: bExtMatterNotify,
-		extend_mattermost_leftmenu: bExtMatterLeftMenu,
+		mch_inventory_effect: swMchInventoryEffectID1,
+		extend_mch_inventory_effect: bExtMchInventoryEffectNotify,
 	}, function () {
 		console.log("save setting.");
-		console.log("*** swRedmineID=" + swRedmineID);
-		console.log("*** swDialyID=" + swDialyID);
-		console.log("*** swMattermost1ID=" + swMattermostID1);
-		console.log("*** swMattermost2ID=" + swMattermostID2);
+		console.log("*** swMattermost1ID=" + swMchInventoryEffectID1);
 	});
 }
 function save_userinfo(userID) {
@@ -109,15 +94,9 @@ function getCheckedID(name) {
 // 設定LOAD
 function load_options() {
 	chrome.storage.sync.get({
-		redmine1id: "redmine1on",
-		dialy1id: "dialy1on",
-		matter1id: "matter1on",
-		matter2id: "matter2on"
+		mch_inventory_effect: "mch1on",
 	}, function (items) {
-		document.getElementById(items.redmine1id).checked = true;
-		document.getElementById(items.dialy1id).checked = true;
-		document.getElementById(items.matter1id).checked = true;
-		document.getElementById(items.matter2id).checked = true;
+		document.getElementById(items.mch_inventory_effect).checked = true;
 	});
 }
 function load_textmemo() {
@@ -245,8 +224,8 @@ function activeTab() {
 //document.getElementById("redmine1off").addEventListener('click', save_options);
 //document.getElementById("dialy1on").addEventListener('click', save_options);
 //document.getElementById("dialy1off").addEventListener('click', save_options);
-//document.getElementById("matter1on").addEventListener('click', save_options);
-//document.getElementById("matter1off").addEventListener('click', save_options);
+document.getElementById("mch1on").addEventListener('click', save_options);
+document.getElementById("mch1off").addEventListener('click', save_options);
 //document.getElementById("matter2on").addEventListener('click', save_options);
 //document.getElementById("matter2off").addEventListener('click', save_options);
 //document.getElementById("test-replace-pre").addEventListener('change', save_replacetext);
@@ -254,8 +233,8 @@ function activeTab() {
 //document.getElementById("text-memo").addEventListener('change', save_textmemo);
 //document.getElementById("mattermost").addEventListener('click', activeTab);
 document.getElementById("get_id").addEventListener('click', getIDs);
+load_options();
 load_textmemo();
-//load_replacetext();
 load_memos();
 load_userinfo();
 
@@ -277,29 +256,6 @@ chrome.tabs.query({ active: true, currentWindow: true },
 	
 	///////////////////////////////////////////////////////////////////////////////////////
 	// 追加ボタン押下時の動作
-
-	// 日報
-	const inputDialyTag = document.getElementById("inputDialy");
-	if(inputDialyTag)
-	{
-		inputDialyTag.onclick = function(){
-			chrome.scripting.executeScript({
-				target: { tabId: activeTab.id },
-				files: ["popup/inputDialy.js"]
-			});
-		}
-	}
-	
-	// redmine（送信試験）
-	const inputRedmineForSendTestTag = document.getElementById("inputRedmineForSendTest");
-	if (inputRedmineForSendTestTag) {
-		inputRedmineForSendTestTag.onclick = function () {
-			chrome.scripting.executeScript({
-				target: { tabId: activeTab.id },
-				files: ["popup/inputRedmineForSendTest.js"]
-			});
-		}
-	}
 
 	// マタモ
 	const inputMattermostTag = document.getElementById("inputMattermost");
@@ -335,45 +291,6 @@ chrome.tabs.query({ active: true, currentWindow: true },
 
 	///////////////////////////////////////////////////////////////////////////////////////
 	// サンプルページ表示動作
-
-	// 利用者情報ファイル
-	const inputDispProcRiyoInfoTag = document.getElementById("dispProcRiyoInfo");
-	if (inputDispProcRiyoInfoTag) {
-		inputDispProcRiyoInfoTag.onclick = function () {
-			window.open("/sample/kihon/index.html", "mozillaTab");
-		}
-	}
-	// スキーマチェック（e-Tax）
-	const inputDispSchemaCheckEtaxTag = document.getElementById("dispSchemaCheckEtax");
-	if (inputDispSchemaCheckEtaxTag) {
-		inputDispSchemaCheckEtaxTag.onclick = function () {
-			window.open("http://web.kosf.jdl.co.jp/etax-xsd/", "mozillaTab");
-		}
-	}
-	// スキーマチェック（eLTAX）
-	const inputDispSchemaCheckEltaxTag = document.getElementById("dispSchemaCheckEltax");
-	if (inputDispSchemaCheckEltaxTag) {
-		inputDispSchemaCheckEltaxTag.onclick = function () {
-			window.open("http://web.kosf.jdl.co.jp/eltax-xsd/", "mozillaTab");
-		}
-	}
-	// 処理結果
-	const inputDispProcResultTag = document.getElementById("dispProcResult");
-	if(inputDispProcResultTag)
-	{
-		inputDispProcResultTag.onclick = function(){
-			window.open("/sample/result/index.html", "mozillaTab");
-			//window.open("file://kosfdocsv3.kosf.jdl.co.jp/kosfshare/Kosf-Develop-Document/Group-Document/DensiGroup/01%20Rxx%E4%BB%8A%E5%BE%8C%E3%81%AE%E4%BD%9C%E6%A5%AD/%E5%87%A6%E7%90%86%E7%B5%90%E6%9E%9C%E7%94%BB%E9%9D%A2/%E3%80%90%E3%83%87%E3%83%BC%E3%82%BF%E4%BD%9C%E6%88%90%E3%80%91%E5%87%BA%E5%8A%9B%E3%82%B5%E3%83%B3%E3%83%97%E3%83%ABHTML/index.html", "mozillaTab");
-		}
-	}
-	// 署名エラー
-	const inputDispSignErrorTag = document.getElementById("dispSignError");
-	if(inputDispSignErrorTag )
-	{
-		inputDispSignErrorTag .onclick = function(){
-			window.open("/sample/sign/index.html", "mozillaTab");
-		}
-	}
 
 	// メモ-SAVE
 	const inputMemoSave = document.getElementById("memo-save");
