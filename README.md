@@ -42,6 +42,7 @@
 * サイト内でSwapやブリッジさせて手数料稼ぎ
 * 専用マーケット作って売買手数料稼ぎ
 
-# Chromeストア
-公開先
+## Chromeストア 拡張機能公開ページ
+
+MCHスカウター
 https://chromewebstore.google.com/detail/mch%E3%82%B9%E3%82%AB%E3%82%A6%E3%82%BF%E3%83%BC/lidbcoedkjkkghehgdnepgoapfknobdn?authuser=0&hl=ja
