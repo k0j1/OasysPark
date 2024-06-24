@@ -1,7 +1,7 @@
 {
     "name": "MCHスカウター",
     "manifest_version": 3,
-    "version": "0.1.1.0",
+    "version": "0.1.1.4",
     "description": "マイクリ機能拡張",
     "permissions": [
         "activeTab",
@@ -16,7 +16,7 @@
     },
     "content_scripts": [
         {
-            "matches": ["https://www.mycryptoheroes.net/ja/inventory/*"],
+            "matches": ["https://www.mycryptoheroes.net/*/inventory/*"],
             "js": ["popup/scouter.js"]
         }
     ],

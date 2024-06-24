@@ -1,6 +1,6 @@
 // 設定LOAD
 chrome.storage.sync.get({
-	extend_mch_inventory_effect: false,
+	extend_mch_inventory_effect: true,
 }, function (items) {
 	let bExec = items.extend_mch_inventory_effect;
 	if (bExec) setTimeout(fnCheckInventory,1000);
@@ -88,6 +88,48 @@ var styleElem = document.createElement("style");
             100% {
                 opacity: 1;
                 transform: scale(1);
+            }
+        }
+
+        .line1{
+            position:absolute;
+            top:50%;
+            left:50%;
+            border:1px solid white;
+            height:0;
+            width: 0;
+            transform: rotate(-45deg);
+            transform-origin: 0% 0%;
+            animation: border_anim 0.2s linear forwards;
+            animation-delay: 1.5s;
+        }
+        .line2{
+            position:absolute;
+            top:-1px;
+            left:101%;
+            border:1px solid white;
+            height:0;
+            width: 0;
+            transform: rotate(45deg);
+            transform-origin: 0% 0%;
+            animation: border_anim2 0.1s linear forwards;
+            animation-delay: 1.7s;
+        }
+
+        @keyframes border_anim {
+            0%{
+                width: 0%;
+            }
+            100%{
+                width: 100%;
+            }
+        }
+        @keyframes border_anim2 {
+            0%{
+                width: 0%;
+            }
+            100%{
+                width: 25%;
             }
         }
 	`;
