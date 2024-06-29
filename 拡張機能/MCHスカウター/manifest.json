@@ -1,7 +1,7 @@
 {
     "name": "MCHスカウター",
     "manifest_version": 3,
-    "version": "0.1.2.12",
+    "version": "0.1.2.13",
     "description": "マイクリ機能拡張",
     "permissions": [
         "activeTab",
