@@ -228,7 +228,7 @@ function setChart(parentElem, id, hp, phy, int, agi){
         type: 'pie',
         data: {
             label: 'ステータス',
-            //labels: ["HP", "PHY", "INT", "AGI"],
+            labels: ["HP", "PHY", "INT", "AGI"],
             datasets: [{
                 data:[hp,phy,int,agi],
                 backgroundColor: [
@@ -247,7 +247,11 @@ function setChart(parentElem, id, hp, phy, int, agi){
             }]
         },
         options: {
-            
+            plugins: {
+                legend: {
+                    display: false
+                }
+            }
         }
     });
     parentElem.prepend(canvElem);
