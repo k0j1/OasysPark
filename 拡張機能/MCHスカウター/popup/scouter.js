@@ -25,7 +25,7 @@ overlayElem.innerHTML = `
 
 var styleElem = document.createElement("style");
 	styleElem.textContent = `
-		.overlay { position: absolute; width: 124px; height: 124px; background-color: rgba(128,128,128,0.0); z-index: 2; padding:0; }
+		.overlay { position: absolute; width: 124px; height: 124px; background-color: rgba(128,128,128,0.0); z-index: 1; padding:0; }
         .circle { display: block; border: 5px dashed white; border-radius: 50%; width: 80px; height: 80px; position: absolute; padding: 0; top: 17px; left: 17px; animation: spin-left 5s linear infinite }
         .circle2 { border: 5px dashed white; border-radius: 50%; width: 40px; height: 40px; position: absolute; top: 37px; left: 37px; animation: spin-right 4s linear infinite; }
 
