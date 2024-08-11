@@ -1,3 +1,6 @@
+const INTERVAL_CHECK_TAG = 1000
+const INTERVAL_CHECK_STATUS = 18
+
 // 設定LOAD
 chrome.storage.sync.get({
 	extend_mch_inventory_effect: true,
@@ -26,7 +29,7 @@ overlayElem.innerHTML = `
 var styleElem = document.createElement("style");
 	styleElem.textContent = `
         .appHeader[data-v-7ebbd4a4]{ z-index:3; }
-	    .overlay { position: absolute; width: 124px; height: 124px; background-color: rgba(128,128,128,0.0); z-index: 2; padding:0; }
+	    .overlay { position: absolute; width: 124px; height: 124px; background-color: rgba(128,128,128,0.0); z-index: 1; padding:0; }
         .circle { display: block; border: 5px dashed white; border-radius: 50%; width: 80px; height: 80px; position: absolute; padding: 0; top: 17px; left: 17px; animation: spin-left 5s linear infinite }
         .circle2 { border: 5px dashed white; border-radius: 50%; width: 40px; height: 40px; position: absolute; top: 37px; left: 37px; animation: spin-right 4s linear infinite; }
 
@@ -144,6 +147,41 @@ var styleElem = document.createElement("style");
             height:100%;
         }
         
+        .assetInfo__lv--max {
+            color: white;
+            border-radius: 50px;
+            background: linear-gradient(90deg, red, green, blue);
+            font-size: 14px;
+            height: 1.75em;
+            line-height: 1;
+            text-align: center;
+            width: 50px;
+            padding: .375em;
+        }
+
+        .asset_lvMax{
+            border: 2px solid #da4033;
+            border-radius: 4px;
+            position: relative;
+        }
+        .asset_lvMax:after{
+            color: white;
+            border-radius: 50px;
+            background: linear-gradient(90deg, red, green, blue);
+            content: "Lv.Max";
+            font-weight: bold;
+            left: .7em;
+            padding: .2em;
+            position: absolute;
+            top: -1em;
+            width:70px;
+            text-align:center;
+            z-index:1;
+        }
+
+        // .assetSelector__assetInner{
+        //     background: #282b33cc;
+        // }        
 	`;
 document.head.appendChild(styleElem);
 
@@ -187,14 +225,117 @@ var fnCheckInventory = function() {
             // });
             //setTimeout(fnCheckEmptyAsset,1000);
         }
-    }else{
-        setTimeout(fnCheckInventory,1000);
+    }
+    if(0 >= elemItems.length){
+        elemItems = document.getElementsByClassName("assetSelector__asset");
+        if(0 < elemItems.length){
+            for(elem of elemItems){
+                elem.addEventListener("mouseover", (event) => {
+                    // すでにステータス表示済みならクリックしない
+                    if(event.currentTarget.id === "mouseovered") return;
+                    let inputTag = event.currentTarget.getElementsByTagName("input");
+                    // クリック済みならクリックしない
+                    if(inputTag==null) return;
+                    if(inputTag.length==0) return;
+                    if(inputTag[0].checked) return;
+                    event.currentTarget.id = "mouseovered";
+                    inputTag[0].click();
+                    startCheckAssets(event.currentTarget);
+                });
+                elem.addEventListener("click", (event) => {
+                    // ステータス表示済みでならクリックしない
+                    if(!(event.currentTarget.id === "mouseovered")) return;
+                    let inputTag = event.currentTarget.getElementsByTagName("input");
+                    // クリック済みならクリックしない
+                    if(inputTag==null) return;
+                    if(inputTag.length==0) return;
+                    if(inputTag[0].checked) return;
+                    inputTag[0].click();
+                    var canvasElems = event.currentTarget.getElementsByTagName("canvas");
+                    if(!canvasElems || 0 >= canvasElems.length){
+                        startCheckAssets(event.currentTarget);
+                    }        
+                });
+            }
+        }
+    }
+
+    if(0 >= elemItems.length){
+        setTimeout(fnCheckInventory,INTERVAL_CHECK_TAG);
     }
 };
+function startCheckAssets(checkElem){
+    let imgAssetElem = checkElem.getElementsByTagName("img");
+    if(0 >= imgAssetElem.length) return false;
+    gImgCheckSrc = imgAssetElem[0].src;
+    gCurTarget = event.currentTarget;
+    gLimitLoop = 10;
+    fnUpdateInfo();
+}
+
+let gLimitLoop = 10;
+let gCurTarget = null;
+let gImgCheckSrc = null;
+function fnUpdateInfo(){
+    if(gImgCheckSrc == null) return;
+    let bFind = false;
+    var detailViewerElems = document.getElementsByClassName("changeAssetDetailViewer");
+    // マウスオーバー中の画面とイメージが一致しているかのチェック
+    if(0 < detailViewerElems.length){
+        var imgDetailElems = detailViewerElems[0].getElementsByTagName("img");
+        for(let i=0; i < imgDetailElems.length; i++){
+            if(imgDetailElems[i].src === gImgCheckSrc){
+                bFind = true;
+                break;
+            }
+        }
+    }
+    // 見つかった場合はステータス表示＆LVMAX表示
+    if(bFind){
+        // すでにステータス表示が追加されていれば追加しない
+        var canvasElems = gCurTarget.getElementsByTagName("canvas");
+        if(!canvasElems || 0 >= canvasElems.length){
+            var statusElems = detailViewerElems[0].getElementsByClassName("changeAssetDetailViewer__status");
+            if(0 < statusElems.length){
+                let hp = 0;
+                let hpElem = statusElems[0].getElementsByTagName("span");
+                if(0 < hpElem.length) hp = hpElem[0].textContent;
+                let phy = 0;
+                let phyElem = statusElems[1].getElementsByTagName("span");
+                if(0 < phyElem.length) phy = phyElem[0].textContent;
+                let int = 0;
+                let intElem = statusElems[2].getElementsByTagName("span");
+                if(0 < intElem.length) int = intElem[0].textContent;
+                let agi = 0;
+                let agiElem = statusElems[3].getElementsByTagName("span");
+                if(0 < agiElem.length) agi = agiElem[0].textContent;
+                var canvElem = setChart(gCurTarget, "00", hp, phy, int, agi);
+            }
+        }
+        // すでにLVMAX表示が追加されていれば追加しない
+        if(!gCurTarget.className.includes("asset_lvMax")){
+            var dataElems = detailViewerElems[0].getElementsByClassName("changeAssetDetailViewer__data");
+            if(0 < dataElems.length){
+                var pElems = dataElems[0].getElementsByTagName("p");
+                for(let i=0; i < pElems.length; i++){
+                    if(pElems[i].className.includes("changeAssetDetailViewer__lv--maxLv")){
+                        gCurTarget.classList.add("asset_lvMax");
+                        break;
+                    }
+                }
+            }
+        }
+    }else{
+        if(0 < gLimitLoop){
+            gLimitLoop--;
+            setTimeout(fnUpdateInfo,INTERVAL_CHECK_STATUS);
+        }
+    }
+}
 
 const observer = new MutationObserver(() => {
     // ここにDOM変更時の処理を書く
-    setTimeout(fnCheckInventory,1000);
+    setTimeout(fnCheckInventory,INTERVAL_CHECK_TAG);
     console.log('変更を検知');
 });
 
@@ -221,6 +362,7 @@ observer.observe(document.body, {
 //     setTimeout(fn,1000);
 // });
 function setChart(parentElem, id, hp, phy, int, agi){
+    if(parentElem==null) return;
     //var elemItems = document.getElementsByClassName("assetSelectableListItem__inner");
     var canvElem = document.createElement("canvas");
     canvElem.id = "chart_" + id;
@@ -247,16 +389,32 @@ function setChart(parentElem, id, hp, phy, int, agi){
                 borderWidth: 1
             }]
         },
+        plugins: [ChartDataLabels],
         options: {
             plugins: {
                 legend: {
                     display: false
+                },
+                datalabels: {
+                    color: "#fff",
+                    textStrokeColor: "#000",
+                    textStrokeWidth: 2,
+                    font: {
+                        wight: "bold",
+                        size: 18,
+                    }
                 }
             }
         }
     });
-    parentElem.prepend(canvElem);
-    parentElem.removeChild(overlayElem);
+    if(canvElem){
+        parentElem.prepend(canvElem);
+    }
+    var isContained = parentElem.contains(overlayElem);
+    if(isContained){
+        parentElem.removeChild(overlayElem);
+    }
+    return canvElem;
 }
 
 function getID(target){
