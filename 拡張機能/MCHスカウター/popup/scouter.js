@@ -361,6 +361,8 @@ observer.observe(document.body, {
 //     // ここに処理を記述
 //     setTimeout(fn,1000);
 // });
+
+// グラフの描画
 function setChart(parentElem, id, hp, phy, int, agi){
     if(parentElem==null) return;
     //var elemItems = document.getElementsByClassName("assetSelectableListItem__inner");
@@ -417,6 +419,7 @@ function setChart(parentElem, id, hp, phy, int, agi){
     return canvElem;
 }
 
+// ヒーローID取得
 function getID(target){
     const classNameForHeroID = "assetSelectableListItem__basic__id";
     const elemIDs = target.getElementsByClassName(classNameForHeroID);
