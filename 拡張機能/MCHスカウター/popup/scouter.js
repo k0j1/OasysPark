@@ -9,6 +9,7 @@ chrome.storage.sync.get({
 	if (bExec) setTimeout(fnCheckInventory,1000);
 });
 
+// 初期準備
 var elemItems = document.getElementsByClassName("assetSelectableListItem__inner");
 var overlayElem = document.createElement("div");
 overlayElem.className = "overlay fadein";
@@ -26,6 +27,7 @@ overlayElem.innerHTML = `
 // scriptElem.src = "https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js";
 // document.head.appendChild(scriptElem);
 
+// スタイル追加
 var styleElem = document.createElement("style");
 	styleElem.textContent = `
         .appHeader[data-v-7ebbd4a4]{ z-index:3; }
@@ -185,77 +187,77 @@ var styleElem = document.createElement("style");
 	`;
 document.head.appendChild(styleElem);
 
-function resetTargetClass(target){
-    if(!target) return false;
-    //target.className = "assetSelectableListItem__inner";
+// イベントリ画面でのホバー時のアクションセット
+function setInventoryHoverAction(event){
+    let overElems = event.currentTarget.getElementsByClassName("overlay");
+    if(overElems.length == 0){
+        // ホバー時の動作
+        if(preTarget != event.currentTarget){
+            overlayElem.className = "overlay";
+            overlayElem.classList.add("fedein");
+            event.currentTarget.prepend(overlayElem);
+        }
+        if(window.location.href.includes("/heroes/")){
+            // ヒーロー情報取得
+            const heroID = getID(event.currentTarget);
+            getRequestHeroInfo(event.currentTarget, heroID);
+        }else if(window.location.href.includes("/extensions/")){
+            // エクステンション情報取得
+            const extID = getID(event.currentTarget);
+            getRequestExtInfo(event.currentTarget, extID);
+        }
+        preTarget = event.currentTarget;
+    }else{
+
+    }
 }
+// 選択画面でのホバー時のアクションセット
+function setSelectableHoverAction(event){
+        // すでにステータス表示済みならクリックしない
+    if(event.currentTarget.id === "mouseovered") return;
+    let inputTag = event.currentTarget.getElementsByTagName("input");
+    // クリック済みならクリックしない
+    if(inputTag==null) return;
+    if(inputTag.length==0) return;
+    if(inputTag[0].checked) return;
+    event.currentTarget.id = "mouseovered";
+    inputTag[0].click();
+    startCheckAssets(event.currentTarget);
+}
+// 選択画面でのクリック時のアクションセット
+function setSelectableClickAction(event){
+    // ステータス表示済みでならクリックしない
+    if(!(event.currentTarget.id === "mouseovered")) return;
+    let inputTag = event.currentTarget.getElementsByTagName("input");
+    // クリック済みならクリックしない
+    if(inputTag==null) return;
+    if(inputTag.length==0) return;
+    if(inputTag[0].checked) return;
+    inputTag[0].click();
+    var canvasElems = event.currentTarget.getElementsByTagName("canvas");
+    if(!canvasElems || 0 >= canvasElems.length){
+        startCheckAssets(event.currentTarget);
+    }        
+} 
 
 var preTarget = null;
-// イベントリの読み込み完了したら、ホバー時のアクションセット
+// イベントリの読み込み完了したら、アイテムごとにホバー時のアクションセット
 var fnCheckInventory = function() {
+    // イベントリ画面でのアクション設定
     var elemItems = document.getElementsByClassName("assetSelectableListItem__inner");
     if(0 < elemItems.length){
         //elemItems[1].classList.add("fedein");    
         for(elem of elemItems){
-            elem.addEventListener("mouseover", (event) => {
-                let overElems = event.currentTarget.getElementsByClassName("overlay");
-                if(overElems.length == 0){
-                    // ホバー時の動作
-                    if(preTarget != event.currentTarget){
-                        overlayElem.className = "overlay";
-                        overlayElem.classList.add("fedein");
-                        event.currentTarget.prepend(overlayElem);
-                    }
-                    if(window.location.href.includes("/heroes/")){
-                        // ヒーロー情報取得
-                        const heroID = getID(event.currentTarget);
-                        getRequestHeroInfo(event.currentTarget, heroID);
-                    }else if(window.location.href.includes("/extensions/")){
-                        // エクステンション情報取得
-                        const extID = getID(event.currentTarget);
-                        getRequestExtInfo(event.currentTarget, extID);
-                    }
-                    preTarget = event.currentTarget;
-                }else{
-
-                }
-            });
-            // elem.addEventListener("mouseleave", (event) =>{
-            //     setTimeout(resetTargetClass, 3000, event.currentTarget);
-            // });
-            //setTimeout(fnCheckEmptyAsset,1000);
+            elem.addEventListener("mouseover", setInventoryHoverAction);
         }
     }
+    // インベントリ画面でのアクション設定
     if(0 >= elemItems.length){
         elemItems = document.getElementsByClassName("assetSelector__asset");
         if(0 < elemItems.length){
             for(elem of elemItems){
-                elem.addEventListener("mouseover", (event) => {
-                    // すでにステータス表示済みならクリックしない
-                    if(event.currentTarget.id === "mouseovered") return;
-                    let inputTag = event.currentTarget.getElementsByTagName("input");
-                    // クリック済みならクリックしない
-                    if(inputTag==null) return;
-                    if(inputTag.length==0) return;
-                    if(inputTag[0].checked) return;
-                    event.currentTarget.id = "mouseovered";
-                    inputTag[0].click();
-                    startCheckAssets(event.currentTarget);
-                });
-                elem.addEventListener("click", (event) => {
-                    // ステータス表示済みでならクリックしない
-                    if(!(event.currentTarget.id === "mouseovered")) return;
-                    let inputTag = event.currentTarget.getElementsByTagName("input");
-                    // クリック済みならクリックしない
-                    if(inputTag==null) return;
-                    if(inputTag.length==0) return;
-                    if(inputTag[0].checked) return;
-                    inputTag[0].click();
-                    var canvasElems = event.currentTarget.getElementsByTagName("canvas");
-                    if(!canvasElems || 0 >= canvasElems.length){
-                        startCheckAssets(event.currentTarget);
-                    }        
-                });
+                elem.addEventListener("mouseover", setSelectableHoverAction);
+                elem.addEventListener("click", setSelectableClickAction);
             }
         }
     }
@@ -264,6 +266,8 @@ var fnCheckInventory = function() {
         setTimeout(fnCheckInventory,INTERVAL_CHECK_TAG);
     }
 };
+
+// アセット情報確認開始
 function startCheckAssets(checkElem){
     let imgAssetElem = checkElem.getElementsByTagName("img");
     if(0 >= imgAssetElem.length) return false;
@@ -276,6 +280,7 @@ function startCheckAssets(checkElem){
 let gLimitLoop = 10;
 let gCurTarget = null;
 let gImgCheckSrc = null;
+// アセット情報更新
 function fnUpdateInfo(){
     if(gImgCheckSrc == null) return;
     let bFind = false;
@@ -333,34 +338,20 @@ function fnUpdateInfo(){
     }
 }
 
+// DOM変更を検知
 const observer = new MutationObserver(() => {
     // ここにDOM変更時の処理を書く
     setTimeout(fnCheckInventory,INTERVAL_CHECK_TAG);
     console.log('変更を検知');
 });
-
+// DOM変更を監視する設定
 observer.observe(document.body, {
     subtree: true,
     childList: true, 
     attributes: true,
     characterData: true
 });
-// // アイテムが空になったらイベントリにアクションセット開始
-// var fnCheckEmptyAsset = function() {
-//     var elemItems = document.getElementsByClassName("assetSelectableListItem__inner");
-//     if(0 == elemItems.length){
-//         setTimeout(fnCheckInventory,1000);
-//     }else{
-//         setTimeout(fnCheckEmptyAsset,1000);
-//     }
-// };
 
-// popstate イベントは、ブラウザのアクション（例えば、戻るボタンや進むボタン）によってアクティブな履歴エントリが変更されたときに発生
-// window.addEventListener('popstate', function(event) {
-//     console.log('URLが変更されました: ', window.location.href);
-//     // ここに処理を記述
-//     setTimeout(fn,1000);
-// });
 
 // グラフの描画
 function setChart(parentElem, id, hp, phy, int, agi){
@@ -464,6 +455,8 @@ function getRequestHeroInfo(target, heroID)
         console.log("getRequestHeroInfo error4");
 	}
 }
+
+// エクステンションIDを元にURLからjson取得
 function getRequestExtInfo(target, extID)
 {
 	// エクステンションID一覧取得
