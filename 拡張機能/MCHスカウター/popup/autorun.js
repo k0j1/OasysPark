@@ -1,4 +1,6 @@
 
+
+
 // クエストタイトル取得
 function getQuestTitle(modalDlgElem) {
     var modalHeaderElem = modalDlgElem.getElementsByClassName('modal__header')[0];
