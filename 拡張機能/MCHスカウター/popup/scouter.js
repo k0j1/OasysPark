@@ -37,25 +37,30 @@ overlayElem.innerHTML = `
 // document.head.appendChild(scriptElem);
 
 // イベントリ画面でのホバー時のアクションセット
-function setInventoryHoverAction(event){
-    let overElems = event.currentTarget.getElementsByClassName("overlay");
-    if(overElems.length == 0){
+function setInventoryHoverActionEvent(event){
+    setInventoryHoverActionTarget(event.currentTarget);
+}
+function setInventoryHoverActionTarget(targetElem){
+    // let overElems = targetElem.getElementsByClassName("overlay");
+    // if(overElems.length == 0){
+    if(!targetElem.className.includes("scoutered")){
+        targetElem.classList.add("scoutered");
         // ホバー時の動作
-        if(preTarget != event.currentTarget){
-            overlayElem.className = "overlay";
-            overlayElem.classList.add("fedein");
-            event.currentTarget.prepend(overlayElem);
-        }
+        // if(preTarget != targetElem){
+        //     overlayElem.className = "overlay";
+        //     overlayElem.classList.add("fedein");
+        //     targetElem.prepend(overlayElem);
+        // }
         if(window.location.href.includes("/heroes/")){
             // ヒーロー情報取得
-            const heroID = getID(event.currentTarget);
-            getRequestHeroInfo(event.currentTarget, heroID);
+            const heroID = getID(targetElem);
+            getRequestHeroInfo(targetElem, heroID);
         }else if(window.location.href.includes("/extensions/")){
             // エクステンション情報取得
-            const extID = getID(event.currentTarget);
-            getRequestExtInfo(event.currentTarget, extID);
+            const extID = getID(targetElem);
+            getRequestExtInfo(targetElem, extID);
         }
-        preTarget = event.currentTarget;
+        preTarget = targetElem;
     }else{
 
     }
@@ -98,41 +103,43 @@ var fnCheckInventory = function() {
     if(0 < elemItems.length){
         //elemItems[1].classList.add("fedein");    
         for(elem of elemItems){
-            elem.addEventListener("mouseover", setInventoryHoverAction);
+            //elem.addEventListener("mouseover", setInventoryHoverAction);
+            setInventoryHoverActionTarget(elem);
         }
     }
     
     // 選択画面でのアクション設定
-    if(0 >= elemItems.length)
-    {
-        // マウスホバー＆クリック時のアクション設定
-        elemItems = document.getElementsByClassName("assetSelector__asset");
-        if(0 < elemItems.length){
-            // 選択中のinputタグを保存
-            if(gSelectedItem == null){
-                var elemAssetSelectorItems = document.getElementsByClassName("assetSelector__wrapper");
-                if(elemAssetSelectorItems){
-                    if(0 < elemAssetSelectorItems.length){
-                        var elemAssetSelectorInputs = elemAssetSelectorItems[0].getElementsByTagName("input");
-                        for(let i=0; i < elemAssetSelectorInputs.length; i++){
-                            if(elemAssetSelectorInputs[i].checked){
-                                gSelectedItem = elemAssetSelectorInputs[i];
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-            for(elem of elemItems){
-                elem.addEventListener("mouseover", setSelectableHoverAction);
-                elem.addEventListener("click", setSelectableClickAction);
-            }
-        }
-        else
-        {
-            gSelectedItem = null;
-        }
-    }
+    // if(0 >= elemItems.length)
+    // {
+    //     // マウスホバー＆クリック時のアクション設定
+    //     elemItems = document.getElementsByClassName("assetSelector__asset");
+    //     if(0 < elemItems.length){
+    //         // 選択中のinputタグを保存
+    //         if(gSelectedItem == null){
+    //             var elemAssetSelectorItems = document.getElementsByClassName("assetSelector__wrapper");
+    //             if(elemAssetSelectorItems){
+    //                 if(0 < elemAssetSelectorItems.length){
+    //                     var elemAssetSelectorInputs = elemAssetSelectorItems[0].getElementsByTagName("input");
+    //                     for(let i=0; i < elemAssetSelectorInputs.length; i++){
+    //                         if(elemAssetSelectorInputs[i].checked){
+    //                             gSelectedItem = elemAssetSelectorInputs[i];
+    //                             break;
+    //                         }
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //         for(elem of elemItems){
+    //             //startCheckAssets(elem);
+    //             //elem.addEventListener("mouseover", setSelectableHoverAction);
+    //             //elem.addEventListener("click", setSelectableClickAction);
+    //         }
+    //     }
+    //     else
+    //     {
+    //         gSelectedItem = null;
+    //     }
+    // }
 
     if(0 >= elemItems.length){
         setTimeout(fnCheckInventory,INTERVAL_CHECK_TAG);
@@ -215,7 +222,7 @@ function fnUpdateInfo(){
 const observer = new MutationObserver(() => {
     // ここにDOM変更時の処理を書く
     setTimeout(fnCheckInventory,INTERVAL_CHECK_TAG);
-    console.log('変更を検知');
+    //console.log('変更を検知');
 });
 // DOM変更を監視する設定
 observer.observe(document.body, {

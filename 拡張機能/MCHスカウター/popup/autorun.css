@@ -1,0 +1,21 @@
+
+button.nodeType__autorun {
+    background: white;
+    color: black;
+    padding: 0.5em;
+}
+
+.modal__footer button:nth-last-child(2){
+    background: #fdfdfd;
+    border-radius: .125rem;
+    border: 1px solid #fdfdfd;
+    color: #303030;
+    max-width: 640px;
+    padding: .5rem 1rem;
+    line-height: 1.6;
+    font-weight: 400;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,.41);
+    transition: .2s ease-in-out;
+    outline: none;
+    cursor: pointer;
+}
