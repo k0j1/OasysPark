@@ -5,7 +5,7 @@ button.nodeType__autorun {
     padding: 0.5em;
 }
 
-.modal__footer[data-v-39babf36]  button:nth-last-child(2){
+.modal__footer button:nth-last-child(2){
     background: #fdfdfd;
     border-radius: .125rem;
     border: 1px solid #fdfdfd;

@@ -222,7 +222,7 @@ function fnUpdateInfo(){
 const observer = new MutationObserver(() => {
     // ここにDOM変更時の処理を書く
     setTimeout(fnCheckInventory,INTERVAL_CHECK_TAG);
-    console.log('変更を検知');
+    //console.log('変更を検知');
 });
 // DOM変更を監視する設定
 observer.observe(document.body, {
