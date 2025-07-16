@@ -32,9 +32,6 @@ overlayElem.innerHTML = `
         <div class="left-arrow2"></div>      
     </div>
 `;
-// var scriptElem = document.createElement("script");
-// scriptElem.src = "https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js";
-// document.head.appendChild(scriptElem);
 
 // イベントリ画面でのホバー時のアクションセット
 function setInventoryHoverActionEvent(event){
