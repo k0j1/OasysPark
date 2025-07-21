@@ -1,0 +1,165 @@
+* { outline:none; box-sizing:border-box; text-align:center; }
+*, *::before, *::after { border-width:0; border-style:solid; box-sizing:border-box; }
+body{ color:white; background: black; }
+
+#main{ max-width: 320px;margin: 0 auto; }
+#today_fortune{ display:none; }
+
+button{
+    position: relative;
+    outline: none;
+    cursor: pointer;
+    background: none;
+    border: none;
+}
+
+.userid_box
+{
+color:white;
+    display: flex; /*アイコン、テキストボックスを調整する*/
+    align-items: center; /*アイコン、テキストボックスを縦方向の中心に*/
+    justify-content: center; /*アイコン、テキストボックスを横方向の中心に*/
+    width: 320px;
+    height: 50px;
+    border-radius: 5px;
+    border: 1px solid lightgray;
+}
+
+.userid_inner
+{
+    width: 100%;
+    height: 100%;
+    background-color: transparent; /*.password_boxの枠線お角一部被るため透明に*/
+    position: relative;
+}
+
+#userID{
+    position: absolute;
+    z-index: 1; /*.password_stringよりも上に配置*/
+    color:white;
+    text-align:left;
+    height: 100%;
+    width: 100%;
+    top: 0; left: 0; bottom: 0; right: 0;
+    border: none; /*枠線非表示*/
+    outline: none; /*フォーカス時の枠線非表示*/
+    padding: 0 10px;
+    font-size: 12px;
+    background-color: transparent; /*後ろの.password_stringを見せるため*/
+    box-sizing: border-box; /*横幅の解釈をpadding, borderまでとする*/
+}
+
+.userid_string{
+    position: absolute;
+    height: 100%;
+    width: 240px; /*文字列分の長さ*/
+    top: 0; left: 0; bottom: 0; right: 0;
+    padding-left: 10px; /*position: absolute;でのmarginは親要素はみ出す*/
+    font-size: 16px;
+    line-height: 50px; /*文字列を縦方向にmiddleに見せるため*/
+    background-color: transparent;
+    color: #80868b;
+    box-sizing: border-box; /*横幅の解釈をpadding, borderまでとする*/
+    transition: all 0.2s;
+    -webkit-transition: all 0.2s;
+}
+
+/*アニメーション*/
+#userID:not(:placeholder-shown) + .userid_string,
+#userID:focus + .userid_string
+{
+    color: #3be5ae;
+    font-size: 10px;
+    line-height: 10px;
+    width: 150px;
+    height: 10px;
+    padding: 0 2px;
+    background-color: black;
+    transform:translate3d(5px, -6px, 0);
+}
+
+.main_header {
+    position: sticky;
+    height: 60px;
+    top: 0px;
+    z-index: 1100;
+    background: #141416;
+}
+
+.css-1r51x5v {
+    display: -webkit-inline-box;
+    display: -webkit-inline-flex;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    appearance: none;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    position: relative;
+    white-space: nowrap;
+    vertical-align: middle;
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    width: auto;
+    font-family: Sen,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    font-weight: 700;
+    line-height: 1.14;
+    transition-property: background-color,border-color,color,fill,stroke,opacity,box-shadow,transform;
+    transition-duration: 200ms;
+    height: 3rem;
+    min-width: 3rem;
+    -webkit-padding-start: 1.5rem;
+    padding-inline-start: 1.5rem;
+    -webkit-padding-end: 1.5rem;
+    padding-inline-end: 1.5rem;
+    -font-size: sm;
+    padding: 0px;
+    font-size: 1.5rem;
+}
+
+.css-ip97q7 {
+    opacity: 1;
+    border: 0;
+    border-color: inherit;
+    border-style: solid;
+    border-bottom-width: 1px;
+    width: 100%;
+}
+
+hr {
+    border-top-width: 1px;
+    box-sizing: content-box;
+    margin: 0;
+    height: 0;
+    color: inherit;
+    overflow: visible;
+    display: block;
+    unicode-bidi: isolate;
+    margin-block-start: 0.5em;
+    margin-block-end: 0.5em;
+    margin-inline-start: auto;
+    margin-inline-end: auto;
+}
+
+.chart-overlay{
+    display:inline-block;
+    position:relative;
+}
+
+.chart-status{
+    position:absolute;
+    width:100%;
+    height:100%;
+}
