@@ -33,7 +33,7 @@ overlayElem.innerHTML = `
     </div>
 `;
 
-// イベントリ画面でのホバー時のアクションセット
+// インベントリ画面でのホバー時のアクションセット
 function setInventoryHoverActionEvent(event){
     setInventoryHoverActionTarget(event.currentTarget);
 }
@@ -93,9 +93,9 @@ function setSelectableClickAction(event){
 } 
 
 var preTarget = null;
-// イベントリの読み込み完了したら、アイテムごとにホバー時のアクションセット
+// インベントリの読み込み完了したら、アイテムごとにホバー時のアクションセット
 var fnCheckInventory = function() {
-    // イベントリ画面でのアクション設定
+    // インベントリ画面でのアクション設定
     var elemItems = document.getElementsByClassName("assetSelectableListItem__inner");
     if(0 < elemItems.length){
         //elemItems[1].classList.add("fedein");    
