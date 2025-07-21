@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang='en' class=''>
+
+<head>
+  <meta charset='UTF-8'>
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, user-scalable=yes">
+  <title>マイクリおみくじ</title>
+  <link rel="stylesheet" href="MCH_Omikuji_Result.css">
+</head>
+
+<body>
+  <a id="back_btn" href="https://k0j1.github.io/OasysPark/public_html/Omikuji/MCH_Omikuji.html"><img src="https://www.takahara-books.com/Image/MCH/back_btn.png"></a>
+  <link href="https://fonts.googleapis.com/css?family=Sawarabi+Mincho" rel="stylesheet">
+
+  <div id="particles-js"></div>
+  
+  <aside class="profile-card">
+    <header>
+        <h2 id="fortune_str">大吉</h2>
+    </header>
+    <br>
+    <br>
+    <div class="profile-bio">
+        <small id="title">あなたに贈る名言</small>    
+        
+        <div data-v-a9f81ef0="" class="assetPage__passiveSkill">
+        <div data-v-a9f81ef0="" class="assetPage__skill">
+            <div data-v-a9f81ef0="" class="assetPage__skill--right" id="quot_str">
+            恃(たの)むところにある者は、恃むもののために滅びる
+            </div>
+        </div>
+        
+        <!-- here’s the avatar -->
+        <a target="_blank" href="#">
+        <img id="hero_img" src="https://www.mycryptoheroes.net/images/heroes/2000/5001.png" class="hoverZoomLink">
+        </a>
+
+        <!-- the username -->
+        <h2 id="name">織田信長</h2>
+
+        <span id="hero_rarity"></span>
+    </div>
+　　　　</aside>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="https://coco-factory.jp/ugokuweb/wp-content/themes/ugokuweb/data/move02/5-8/js/5-8.js"></script>
+    <script id="rendered-js" >
+        particlesJS("particles-js",{
+        "particles":{
+            "number":{
+                "value":125,//この数値を変更すると紙吹雪の数が増減できる
+                "density":{
+                    "enable":false,
+                    "value_area":400
+                }
+            },
+            "color": {
+            "value": ["#EA5532", "#F6AD3C", "#FFF33F", "#00A95F", "#00ADA9", "#00AFEC","#4D4398", "#E85298"]//紙吹雪の色の数を増やすことが出来る
+            },
+            "shape":{
+                "type":"polygon",//形状はpolygonを指定
+                "stroke":{
+                    "width":0,
+                },
+                "polygon":{
+                    "nb_sides":5//多角形の角の数
+                }
+                },
+                "opacity":{
+                    "value":1,
+                    "random":false,
+                    "anim":{
+                        "enable":true,
+                        "speed":20,
+                        "opacity_min":0,
+                        "sync":false
+                    }
+                },
+                "size":{
+                    "value":5.305992965476349,
+                    "random":true,//サイズをランダムに
+                    "anim":{
+                        "enable":true,
+                        "speed":1.345709068776642,
+                        "size_min":0.8,
+                        "sync":false
+                    }
+                },
+                "line_linked":{
+                    "enable":false,
+                },
+                "move":{
+                    "enable":true,
+                "speed":10,//この数値を小さくするとゆっくりな動きになる
+                "direction":"bottom",//下に向かって落ちる
+                "random":false,//動きはランダムにならないように
+                "straight":false,//動きをとどめない
+                "out_mode":"out",//画面の外に出るように描写
+                "bounce":false,//跳ね返りなし
+                    "attract":{
+                        "enable":false,
+                        "rotateX":600,
+                        "rotateY":1200
+                    }
+                }
+            },
+            "interactivity":{
+                "detect_on":"canvas",
+                "events":{
+                    "onhover":{
+                        "enable":false,
+                    },
+                    "onclick":{
+                        "enable":false,
+                    },
+                    "resize":true
+                },
+            },
+            "retina_detect":true
+        });
+
+    // URLを取得
+    const userID = getUserID();
+    changeLink(userID);
+
+    ////////////////////////////////////////////
+    // URLからユーザーID取得
+    function getUserID()
+    {
+        let url = new URL(window.location.href);
+        let params = url.searchParams;
+        let nUserID = params.get('id');
+        if(nUserID==null)
+        {
+            nUserID = Math.floor(Math.random() * 100000);
+        }
+        return nUserID;
+    }
+    function getRandData()
+    {
+        //今日の日付データを変数hidukeに格納
+        var date = new Date();
+        //年・月・日・曜日を取得する
+        var year = date.getFullYear()+1;
+        var month = date.getMonth()+1;
+        var week = date.getDay()+1;
+        var day = date.getDate()+1;
+        // ユーザーIDから日付のランダム値を生成
+        return Math.floor(userID*year*month*day*week);
+    }
+    ////////////////////////////////////////////
+    // 戻るリンクにID追加
+    function changeLink(userID)
+    {
+        var elemLink = document.getElementById("back_btn");
+        console.log('userID:'+userID+'('+userID.length+')');
+        if(userID.length > 0)
+        {
+            console.log(elemLink.href);
+            elemLink.href = "https://k0j1.github.io/OasysPark/public_html/Omikuji/MCH_Omikuji.html?id=" + userID;
+            console.log(elemLink.href);
+        }
+    }
+
+    // ランダムな値を得る
+    setFortune(0);
+    setHeroInfo(0);
+
+    ////////////////////////////////////////////
+    // 運勢取得
+    function setFortune(no)
+    {
+    　　　　const ftNum = getRandData() % 100;
+    console.log('Fortune:'+ftNum);
+    
+        const horos = ['大吉', '中吉', '小吉', '吉', '末吉', '凶', '大凶'];
+        // ランダム値に応じて表示する画像を変える
+        var strFortune;
+        if (ftNum < 8) {
+        strFortune = horos[0];
+        } else {
+        var elemPart = document.getElementById("particles-js");
+        elemPart.remove();
+        if (ftNum < 20) {
+            strFortune = horos[1];
+        } else if (ftNum < 35) {
+            strFortune = horos[2];
+        } else if (ftNum < 65) {
+            strFortune = horos[3];
+        } else if (ftNum < 80) {
+            strFortune = horos[4];
+        } else if (ftNum < 92) {
+            strFortune = horos[5];
+        } else {
+            strFortune = horos[6];
+        }
+        }
+        // 文字列の差し替え
+        document.getElementById("fortune_str").textContent = strFortune;
+    }
+
+    function heroInfo(ID, Quot1, Quot2)
+    {
+    this.imgID = ID;
+    this.strQuot1 = Quot1;
+    this.strQuot2 = Quot2;
+    }
+
+    function setHeroInfo(no)
+    {
+    let n=0;
+    var hInfos=[];
+    /////////////////////////////
+    //Legend
+    const legendNum = 23;
+    //織田信長
+    hInfos[0] = new heroInfo(
+        '5001',
+        '恃(たの)むところにある者は、恃むもののために滅びる',
+        '是非に及ばず(しかたがない　 やむを得ない)'
+    );
+    //ナポレオン
+    hInfos[1] = new heroInfo(
+        '5002',
+        '人はその制服どおりの人間になる',
+        'ひとたび戦いを決意したならば、その決意を持続しなければならない'
+    );
+    //曹操
+    hInfos[2] = new heroInfo(
+        '5003',
+        '唯(ただ)才能さえ有れば、是れを挙げ、我が採用する',
+        '老いた駿馬は厩に伏すとも、志は千里にあり'
+    );
+    //ワシントン
+    hInfos[3] = new heroInfo(
+        '5004',
+        '正直は常に最善の策である',
+        '自由は、ひとたび根付き始めると、急速に成長する植物である'
+    );
+    //レオナルドダヴィンチ
+    hInfos[4] = new heroInfo(
+        '5005',
+        'シンプルさは究極の洗練である',
+        '私の仕事は、他人の言葉よりも自分の経験から引き出される'
+    );
+    //アーサー王
+    hInfos[5] = new heroInfo(
+        '5006',
+        '暴力は力ではない、思いやりは弱さではない',
+        '暴力は力ではない、思いやりは弱さではない'
+    );
+    //ジャンヌダルク
+    hInfos[6] = new heroInfo(
+        '5007',
+        '私たちは一つの人生しか生きられないし、信じたようにしかそれを生きられない',
+        'あなたが何者であるかを放棄し、信念を持たずに生きることは、死ぬことよりも悲しい'
+    );
+    //坂本龍馬
+    hInfos[7] = new heroInfo(
+        '5008',
+        '俺は議論はしない、議論に勝っても、人の生き方は変えられぬ',
+        '日本を今一度 せんたくいたし申候'
+    );
+    //劉備
+    hInfos[8] = new heroInfo(
+        '5009',
+        'これ賢、これ徳、よく人を服す',
+        '身を屈して、分を守り、天の時を待つ'
+    );
+    //アインシュタイン
+    hInfos[9] = new heroInfo(
+        '5010',
+        '間違いを犯したことのない人とは、何も新しいことをしていない人だ',
+        '神は絶対にサイコロを振らない'
+    );
+    //バッハ
+    hInfos[10] = new heroInfo(
+        '5012',
+        '音楽だけが世界語であり、翻訳される必要がない',
+        '風は見えなくても風車は回っている'
+    );
+    //チンギスハン
+    hInfos[11] = new heroInfo(
+        '5013',
+        '国は力で支配することはできるが、人の心は力で支配することはできない',
+        '荒ぶる敵には、鷹の如くに'
+    );
+    //カール大帝
+    hInfos[12] = new heroInfo(
+        '5014',
+        '正しい行動は知識だけより良いものだ。しかし、正しいことをするためには、何が正しいか知る必要がある',
+        '二つ目の言語を持つということは、二つ目の魂を持つということだ'
+    );
+    //諸葛亮
+    hInfos[13] = new heroInfo(
+        '5015',
+        '時の流れがわからなければ、寛大であろうと、厳しくしようと、政治はすべて失敗する',
+        '才に傲りてもって人に驕らず、寵をもって威を作さず'
+    );
+    //アレキサンダー
+    hInfos[14] = new heroInfo(
+        '5017',
+        '勝っているときこそ多くの危険が潜んでいる',
+        '挑戦を続ける限りあなたにできないことはないのだ'
+    );
+    //始皇帝
+    hInfos[15] = new heroInfo(
+        '5018',
+        '歴史を読むのは楽しい、歴史を作るのは更に楽しい',
+        '天下が戦に苦しむのは、諸侯があるからだ'
+    );
+    //源頼朝
+    hInfos[16] = new heroInfo(
+        '5019',
+        '歴史を読むのは楽しい、歴史を作るのは更に楽しい',
+        '天下が戦に苦しむのは、諸侯があるからだ'
+    );
+    //安倍晴明
+    hInfos[17] = new heroInfo(
+        '5021',
+        '優しい言葉ほどよく効く呪はないぞ',
+        '優しい言葉ほどよく効く呪はないぞ'
+    );
+    //葛飾北斎
+    hInfos[18] = new heroInfo(
+        '5024',
+        '掃除をする暇があるなら、絵を描きたい',
+        'このままで良いのか。現状に満足してはならない'
+    );
+    //ガリレオガリレイ
+    hInfos[19] = new heroInfo(
+        '5027',
+        'どうして君は他人の報告を信じるばかりで、自分の眼で観察したり見たりしなかったのか',
+        '結果にはすべて原因がある',
+    );
+    //武則天
+    hInfos[20] = new heroInfo(
+        '5030',
+        '親子が信じあうことができないようなら、家庭が睦まじくなることは有り得ない',
+        '官に就くものは平静であるべき。財に近付いても清廉潔白でいるべき'
+    );
+    //スキピオ
+    hInfos[21] = new heroInfo(
+        '5031',
+        '国家に対してわれわれは、金銭での責任でなく、行為の責任を負う',
+        '我、神仏を尊びて、神仏を頼らず'
+    );
+    //宮本武蔵
+    hInfos[22] = new heroInfo(
+        '5032',
+        '構えあって構えなし',
+        '構えあって構えなし'
+    );
+    /////////////////////////////
+    //Epic
+    const EpicNum = 36;
+    n = n+legendNum;
+    //ナイチンゲール
+    hInfos[n+0] = new heroInfo(
+        '4002',
+        '人生は呑気な楽しい休日でも、気の利いたことが記されている書物でもありません',
+        '天使とは、美しい花をまき散らす者ではなく、苦悩する者のために戦う者である'
+    );
+    //ベートーベン
+    hInfos[n+1] = new heroInfo(
+        '4003',
+        '静寂と自由は、最大の財宝である',
+        '墓の下にいても、あなた達の役に立てる。これほどの嬉しいことがあるだろうか',
+    );
+    //勝海舟
+    hInfos[n+2] = new heroInfo(
+        '400５',
+        '行いは己のもの。批判は他人のもの。知ったことではない',
+        '世の中に無神経ほど強いものはない'
+    );
+    //エジソン
+    hInfos[n+3] = new heroInfo(
+        '4007',
+        '天才とは、１％のひらめきと99％の努力である',
+        '失敗したわけではない。 それを誤りだと言ってはいけない。 勉強したのだと言いたまえ'
+    );
+    //マルコポーロ
+    hInfos[n+4] = new heroInfo(
+        '4008',
+        '旅は私の学校だ。 自分の目で見、自分の頭で考える',
+        '旅は私の学校だ。 自分の目で見、自分の頭で考える'
+    );
+    //伊達政宗
+    hInfos[n+5] = new heroInfo(
+        '4009',
+        '小事より大事は発するものなり。油断すべからず',
+        'まともでない人間の相手をまともにすることはない'
+    );
+    //マルクス
+    hInfos[n+6] = new heroInfo(
+        '4011',
+        'それが誰の役にも立たないならそれは商品とは言えない',
+        '過去のすべての社会の歴史は、階級闘争の歴史である'
+    );
+    //沖田総司
+    hInfos[n+7] = new heroInfo(
+        '4012',
+        '刀で斬るな、体で斬れ',
+        '大刀を損じれば小刀を抜きなさい。小刀を損じれば鞘で、鞘を損じれば素手でも戦いなさい 。戦場では誰も待ってはくれないのですよ'
+    );
+    //チャイコフスキー
+    hInfos[n+8] = new heroInfo(
+        '4013',
+        '過去を悔やむ。未来に希望を持つ。そして現在に決して満足しない。それが私のこれまでの人生でやってきたことだ',
+        '我々は常に働かなければならない。そして、自尊心を持った芸術家は、その気にならないという口実をもって、自分の手を停めていてはならない'
+    );
+    //マリーアントワネット
+    hInfos[n+9] = new heroInfo(
+        '4014',
+        'わたしは育てられたのではなく、作りだされたのです',
+        '苦難はまず、自分がどういう人間なのかを自覚させる'
+    );
+    //呂布
+    hInfos[n+10] = new heroInfo(
+        '4016',
+        '曹操が歩兵を、自分が騎兵を率いたならば天下を取るのは容易い',
+        '曹操が歩兵を、自分が騎兵を率いたならば天下を取るのは容易い'
+    );
+    //キュリー夫人
+    hInfos[n+11] = new heroInfo(
+        '4017',
+        '人々の力になること、これは人類の共通の義務なのです',
+        '個人の改善なくして、社会の改革はありません'
+    );
+    //孫権
+    hInfos[n+12] = new heroInfo(
+        '4018',
+        '死んだ者は帰ってはこない',
+        '死んだ者は帰ってはこない'
+    );
+    //ゴッホ
+    hInfos[n+13] = new heroInfo(
+        '4021',
+        '私はいつも、まだ自分ができないことをする。そのやり方を学ぶために',
+        '美しい景色を探すな。景色の中に美しいものを見つけるんだ'
+    );
+    //岳飛
+    hInfos[n+14] = new heroInfo(
+        '4024',
+        '戦陣を構えてから戦うのは兵法の決まりだが、その時に応じて活用するのは人の心にある',
+        '戦陣を構えてから戦うのは兵法の決まりだが、その時に応じて活用するのは人の心にある'
+    );
+    //武田信玄
+    hInfos[n+15] = new heroInfo(
+        '4025',
+        '一生懸命だと知恵が出る、中途半端だと愚痴が出る、いい加減だと言い訳が出る',
+        '信頼してこそ人は尽くしてくれるものだ'
+    );
+    //カエサル
+    hInfos[n+16] = new heroInfo(
+        '4026',
+        '人は喜んで自己の望むものを信じるものだ',
+        'わたしは王ではない。カエサルである'
+    );
+    //土方歳三
+    hInfos[n+17] = new heroInfo(
+        '4027',
+        '一日過ぎると、その一日を忘れるようにしている。過去はもう私にとって何の意味もない',
+        '目的は単純であるべきである。思想は単純であるべきである'
+    );
+    //ダーウィン
+    hInfos[n+18] = new heroInfo(
+        '4028',
+        '生き残る種とは、最も強いものではない。 最も知的なものでもない。 それは、変化に最もよく適応したものである',
+        '一時間の浪費をなんとも思わない人は、人生の価値をまだ発見してはいない'
+    );
+    //モーツァルト
+    hInfos[n+19] = new heroInfo(
+        '4030',
+        '本当にわたしは怠けることが嫌いで、働くことが好きなんだ',
+        '他人の賞賛や非難など一切気にしない。自分自身の感性に従うのみだ'
+    );
+    //上杉謙信
+    hInfos[n+20] = new heroInfo(
+        '4032',
+        '義とは、人が人としてあることの美しさよ',
+        '人の上に立つ対象となるべき人間の一言は、深き思慮を持ってなすべきだ。軽率なことを言ってはならぬ'
+    );
+    //リンカーン
+    hInfos[n+21] = new heroInfo(
+        '4033',
+        'あなたが転んでしまったことに関心はない。そこから立ち上がることに関心があるのだ',
+        '木を切り倒すのに6時間もらえるなら、私は最初の4時間を斧を研ぐことに費やしたい'
+    );
+    //近藤勇
+    hInfos[n+22] = new heroInfo(
+        '4035',
+        '只まさに一死をもって君恩に報いん',
+        '英雄ではない者が真の英雄である'
+    );
+    //西郷隆盛
+    hInfos[n+23] = new heroInfo(
+        '4039',
+        '我を愛する心を以って人を愛せ。自己を許すが如く人を許せ。人を責めるが如く自己を責めよ',
+        '世のすべての人からけなされても落ち込まず、すべての人から褒められてもうぬぼれるな'
+    );
+    //韓信
+    hInfos[n+24] = new heroInfo(
+        '4040',
+        '逃げられる道は前しかない。死中に活を求めよ',
+        '一時の恥を我慢してお前の股をくぐったから、今この地位につくことができた'
+    );
+    //ニコラ・テスラ
+    hInfos[n+25] = new heroInfo(
+        '4041',
+        'ある者が「神」と呼ぶものを、他の者は「物理法則」と呼ぶ',
+        'あなたの憎しみを電気に変えたら、世界中を明るくできるだろう'
+    );
+    //ブッダ
+    hInfos[n+26] = new heroInfo(
+        '4042',
+        '周囲に惑わされず、自分の心に従いなさい',
+        '心を強く保つには、体が元気でなければ'
+    );
+    //ファーブル
+    hInfos[n+27] = new heroInfo(
+        '4044',
+        '多くを学ぶより創造するほうが優る。創造は人生の根底なり',
+        '人間は自分で探し求め、発見したことしか長く覚えることはできない'
+    );
+    //ハンニバル
+    hInfos[n+28] = new heroInfo(
+        '4047',
+        '方法は見つける。なければ作る',
+        '言葉は生き物である。それらには性格や、視点、議題がある'
+    );
+    //周瑜
+    hInfos[n+29] = new heroInfo(
+        '4048',
+        '人間は生まれればいつか必ず死が訪れる。短い生涯を終えるのもまた天命である',
+        '自らの志を実現できない事が残念でならない'
+    );
+    //夏侯惇
+    hInfos[n+30] = new heroInfo(
+        '4049',
+        '目を射抜かれたとてひるんでたまるか。この眼は父と母の血からできめおる。けして捨てるわけにはいかぬのだ',
+        '目を射抜かれたとてひるんでたまるか。この眼は父と母の血からできめおる。けして捨てるわけにはいかぬのだ'
+    );
+    //司馬懿仲達
+    hInfos[n+31] = new heroInfo(
+        '4050',
+        '機敏、すなわち「機をみるに敏なり」',
+        '機敏、すなわち「機をみるに敏なり」'
+    );
+    //フランシスドレーク
+    hInfos[n+32] = new heroInfo(
+        '4052',
+        '偉業を成すのも小さな一歩から',
+        '偉業を成すのも小さな一歩から'
+    );
+    //菅原道真
+    hInfos[n+33] = new heroInfo(
+        '4054',
+        '未だかつて邪は正に勝たず',
+        '未だかつて邪は正に勝たず'
+    );
+    //本多忠勝
+    hInfos[n+34] = new heroInfo(
+        '4055',
+        '本多忠勝も傷を負ったら終わりだな',
+        '采配が良かったのではない、敵が弱すぎたのだ'
+    );
+    //夏目漱石
+    hInfos[n+35] = new heroInfo(
+        '4056',
+        '真面目とはね、君、真剣勝負の意味だよ',
+        '馬は走る。花は咲く。人は書く。自分自身になりたいが為に'
+    );
+    /////////////////////////////
+    //Rare
+    const RareNum = 27;
+    n = n+EpicNum;
+    //ダルタニャン
+    hInfos[n+0] = new heroInfo(
+        '3002',
+        '１人はみんなのために、みんなは１人のために',
+        '１人はみんなのために、みんなは１人のために'
+    );
+    //平賀源内
+    hInfos[n+1] = new heroInfo(
+        '3003',
+        '良薬は口に苦く、出る杭は打たれる習ひ',
+        '良薬は口に苦く、出る杭は打たれる習ひ'
+    );
+    //ノストラダムス
+    hInfos[n+2] = new heroInfo(
+        '3008',
+        '私は人間であり、間違うかもしれないし、しくじるかもしれないし、騙されるかもしれない',
+        '私は人間であり、間違うかもしれないし、しくじるかもしれないし、騙されるかもしれない'
+    );
+    //前田慶次
+    hInfos[n+3] = new heroInfo(
+        '3011',
+        '山間からふわっと雲が浮んでくるように、予期していない事態もそれなりに趣があるものだ',
+        '人生良いときも悪いときも、必ず巡ってくるのだ'
+    );
+    //天草四郎
+    hInfos[n+4] = new heroInfo(
+        '3012',
+        '来世まで友になる',
+        '天も地も根は同じで、全ての物は一体である'
+    );
+    //石川五右衛門
+    hInfos[n+5] = new heroInfo(
+        '3013',
+        '絶景かな絶景かな。春のながめは値千金とは小さなたとえ、この五右衛門からは万両',
+        '絶景かな絶景かな。春のながめは値千金とは小さなたとえ、この五右衛門からは万両'
+    );
+    //直江兼続
+    hInfos[n+6] = new heroInfo(
+        '3014',
+        '天の時 地の利 人の和',
+        '天の時 地の利 人の和'
+    );
+    //イワン雷帝
+    hInfos[n+7] = new heroInfo(
+        '3015',
+        '戦争の終わりにあってさえ、戦いは始まったばかりだと思わねばならない',
+        '戦争の終わりにあってさえ、戦いは始まったばかりだと思わねばならない'
+    );
+    //松尾芭蕉
+    hInfos[n+8] = new heroInfo(
+        '3016',
+        '松のことは松に習え、竹のことは竹に習え',
+        '古人の跡を求めず個人の求めたる所を求めよ'
+    );
+    //武蔵坊弁慶
+    hInfos[n+9] = new heroInfo(
+        '3018',
+        '前世からの約束事かも知れない。ならば従おう',
+        '後世もそのまた後世もめぐり逢おう'
+    );
+    //ポカホンタス
+    hInfos[n+10] = new heroInfo(
+        '3022',
+        '君に出会えないことよりも、死を選ぶ',
+        '君に出会えないことよりも、死を選ぶ'
+    );
+    //ルーベンス
+    hInfos[n+11] = new heroInfo(
+        '3024',
+        '私は地味で孤独な男さ。古いブラシをもって神にインスピレーションを求めるだけのね',
+        '若い乙女を描くのは、思うままにはしゃぎまわるのと似ている。最高のリフレッシュメントだ'
+    );
+    //真田幸村
+    hInfos[n+12] = new heroInfo(
+        '3025',
+        '恩義を忘れ、私欲を貪り、人と呼べるか',
+        'このご恩、土地や金子などに到底変えられない'
+    );
+    //モネ
+    hInfos[n+13] = new heroInfo(
+        '3028',
+        '私は鳥が歌うように、絵を描きたい',
+        'すべては千変万化する。石でさえも'
+    );
+    //シェイクスピア
+    hInfos[n+14] = new heroInfo(
+        '3030',
+        '険しい丘に登るためには、最初にゆっくり歩くことが必要である',
+        '成し遂げんとした志をただ一回の敗北によって捨ててはいけない'
+    );
+    //ワイアットアープ
+    hInfos[n+15] = new heroInfo(
+        '3031',
+        '噂なんていい加減なものだ。 たいてい噂の方がよくできているんだから',
+        '賢い者ほど最後まで銃を手にとらない'
+    );
+    //パーシヴァル
+    hInfos[n+16] = new heroInfo(
+        '3034',
+        '社会が性格にとって有益なものであると同じように、孤独は想像力にとって有益なものである',
+        '社会が性格にとって有益なものであると同じように、孤独は想像力にとって有益なものである'
+    );
+    //小野小町
+    hInfos[n+17] = new heroInfo(
+        '3035',
+        '思いつつ　寝ればや人の見えつらん　夢と知りせば覚めざらましを',
+        '思いつつ　寝ればや人の見えつらん　夢と知りせば覚めざらましを'
+    );
+    //ラクシュミーバーイ
+    hInfos[n+18] = new heroInfo(
+        '3039',
+        '我がジャーンシーは決して放棄しない',
+        '我がジャーンシーは決して放棄しない'
+    );
+    //ラファエロ
+    hInfos[n+19] = new heroInfo(
+        '3041',
+        '絵を描く時、人は思考していない',
+        '絵を描く時、人は思考していない'
+    );
+    //コロンブス
+    hInfos[n+20] = new heroInfo(
+        '3042',
+        '航海することが前提であり、生存することが前提ではない',
+        '0から1を創るのは、難しい'
+    );
+    //ニュートン
+    hInfos[n+21] = new heroInfo(
+        '3043',
+        '年がら年中、そのことばかりを考えていただけです',
+        '天体の動きなら計算できるが、群集の狂気は計算できない'
+    );
+    //徳川家康
+    hInfos[n+22] = new heroInfo(
+        '3044',
+        '堪忍は無事長久の基。怒りは敵と思え',
+        'いさめてくれる部下は、一番槍をする勇士より値打ちがある'
+    );
+    //マリアテレジア
+    hInfos[n+23] = new heroInfo(
+        '3046',
+        '私は寝ません。 死に直面しても起きていたいの',
+        'きれいな歯は体型に劣らず大切なことです'
+    );
+    //アッティラ
+    hInfos[n+24] = new heroInfo(
+        '3047',
+        '決断とは、それだけでもたいへんな努力を要するもの',
+        '決断とは、それだけでもたいへんな努力を要するもの'
+    );
+    //源頼朝
+    hInfos[n+25] = new heroInfo(
+        '3051',
+        '冷静にじっくりと計略を練るようにしなさい',
+        '「あなたを信頼している」と言ってくれたとしても、それは本当に誠であるのであろうか'
+    );
+    //キャシャーン
+    hInfos[n+26] = new heroInfo(
+        '3052',
+        'たったひとつの命を捨てて生まれ変わった不死身のからだ鉄の悪魔を叩いて砕くキャシャーンがやらねば誰がやる',
+        'たったひとつの命を捨てて生まれ変わった不死身のからだ鉄の悪魔を叩いて砕くキャシャーンがやらねば誰がやる'
+    );
+    /////////////////////////////
+    //Uncommon
+    const UncommonNum = 24;
+    n = n+RareNum;
+    //ライト兄弟
+    hInfos[n+0] = new heroInfo(
+        '2001',
+        '夢中になれるものがあったので、朝が待ち遠しくて仕方がなかった。それが幸せというものさ',
+        'いま正しい事も、数年後間違っていることもある。逆にいま間違っていることも、数年後正しいこともある'
+    );
+    //スパルタクス
+    hInfos[n+1] = new heroInfo(
+        '2002',
+        '勝てば馬は幾らでも手に入る。負ければもう必要ない',
+        '勝てば馬は幾らでも手に入る。負ければもう必要ない'
+    );
+    //シューベルト
+    hInfos[n+2] = new heroInfo(
+        '2004',
+        'あるべき姿ではなくありのままの人間を受け入れよう',
+        'あるべき姿ではなくありのままの人間を受け入れよう'
+    );
+    //徳川慶喜
+    hInfos[n+3] = new heroInfo(
+        '2014',
+        'これからはお前の道を行きなさい',
+        'これからはお前の道を行きなさい'
+    );
+    //モンテスキュー
+    hInfos[n+4] = new heroInfo(
+        '2015',
+        '真に偉大な人間になるためには、人々の上に立つのではなく、彼らと共に立たなければならない',
+        '偉大なことを成し遂げる人は、つねに大胆な冒険者である'
+    );
+    //明智光秀
+    hInfos[n+5] = new heroInfo(
+        '2020',
+        '仏のうそは方便という。武士のうそは武略という。土民百姓はかわゆきことなり',
+        '心しらぬ　人は何とも　言はばいへ　身をも惜まじ　名をも惜まじ'
+    );
+    //高杉晋作
+    hInfos[n+6] = new heroInfo(
+        '2021',
+        'おもしろき　こともなき世を　おもしろく　すみなすものは　心なりけり',
+        '苦労する身は厭わねど、苦労し甲斐のあるように'
+    );
+    //アンデルセン
+    hInfos[n+7] = new heroInfo(
+        '2022',
+        'われわれが自分の心の中に持っているほかに悪魔はいない',
+        '目は目を見ることができない'
+    );
+    //ミケランジェロ
+    hInfos[n+8] = new heroInfo(
+        '2023',
+        'やる価値のあることなら、たとえ最初は下手であっても、やる価値がある',
+        '最大の危機は、目標が高すぎて失敗することではなく、低すぎる目標を達成することだ'
+    );
+    //豊臣秀吉
+    hInfos[n+9] = new heroInfo(
+        '2026',
+        '負けると思えば負ける、勝つと思えば勝つ。 逆になろうと、人には勝つと言い聞かすべし',
+        '財産を貯め込むのは、良い人材を牢に押し込むようなものだ'
+    );
+    //一休
+    hInfos[n+10] = new heroInfo(
+        '2029',
+        '門松は冥土の旅の一里塚、めでたくもあり、めでたくもなし',
+        '袈裟が有り難く見えるのは、在家の他力本願'
+    );
+    //ビスマルク
+    hInfos[n+11] = new heroInfo(
+        '2031',
+        '選挙の前と、戦争の最中と、狩りの後ほど人は嘘をつかないものだ',
+        '愚者は自分の経験に学ぶと言う、私はむしろ他人の経験に学ぶのを好む'
+    );
+    //モンゴメリ
+    hInfos[n+12] = new heroInfo(
+        '2032',
+        'なにかを待つってその楽しさの半分にあたるわ',
+        '一生懸命やって負けること'
+    );
+    //ゲーテ
+    hInfos[n+13] = new heroInfo(
+        '2033',
+        '愛することより愛されることのほうが難しい',
+        '愛する人の欠点を愛することのできない者は、真に愛しているとは言えない'
+    );
+    //プラトン
+    hInfos[n+14] = new heroInfo(
+        '2034',
+        '偉大な人物たらんとする者は、自分自身や自分に属するものをではなく、正しいことをこそ愛すべきなのだ',
+        '世間の同情を乞おうとしてはならない。なぜなら、同情の中には軽蔑の念が含まれているからだ'
+    );
+    //樋口一葉
+    hInfos[n+15] = new heroInfo(
+        '2036',
+        '何をなすべきかを考え、その道をひたすら歩んで行くだけです',
+        '命ある限りはどんな苦しみにも耐え、頑張って学問をしたいと思う'
+    );
+    //ドストエフスキー
+    hInfos[n+16] = new heroInfo(
+        '2039',
+        '恋の悩みや嫉妬はすべて退屈のなせるわざなのだ。惰性に押し潰されたのだ',
+        '苦しむこともまた才能の一つである'
+    );
+    //ベンジャミン・フランクリン
+    hInfos[n+17] = new heroInfo(
+        '2041',
+        '時間を浪費するな、人生は時間の積み重ねなのだから',
+        'もし財布の中身を頭につぎこんだら、誰も盗むことはできない。 知識への投資がいつの世でも最高の利子を生む'
+    );
+    //ソクラテス
+    hInfos[n+18] = new heroInfo(
+        '2044',
+        '生きるために食べよ、食べるために生きるな',
+        '自分自身が無知であることを知っている人間は、自分自身が無知であることを知らない人間より賢い'
+    );
+    //達磨
+    hInfos[n+19] = new heroInfo(
+        '2045',
+        '仏の心で生きる人が仏である',
+        '悟りそのものを文字で示すことはできない'
+    );
+    //北条政子
+    hInfos[n+20] = new heroInfo(
+        '2046',
+        'その御恩は、海よりも深く山よりも高いのです',
+        '皆さん、心を一つにして聞きなさい。これが私からの最後の言葉です'
+    );
+    //アリストテレス
+    hInfos[n+21] = new heroInfo(
+        '2047',
+        '批判を避けたいのであれば、何もせず、何も言わず、何者にもなるべきではない',
+        '自分を知ることは、すべての知恵の始まりである'
+    );
+    //ルノワール
+    hInfos[n+22] = new heroInfo(
+        '2048',
+        'どれだけ素晴らしいパレットを持っていても意味がない。大事なのは、どんな眼を持っているかなんだ',
+        'ようやく何かわかりかけてきたような気がする。私はまだ、進歩している'
+    );
+    //ショパン
+    hInfos[n+23] = new heroInfo(
+        '2049',
+        '健康で強い体があれば毎日喜んで働く',
+        '毎朝、非常にゆっくりのテンポで練習し、指をしなやかにしなさい'
+    );
+    /////////////////////////////
+    //Common
+    const CommonNum = 4;
+    n = n+UncommonNum;
+    //コナンドイル
+    hInfos[n+0] = new heroInfo(
+        '1001',
+        '見るべき場所を見ないから、それで大切なものを全て見落とすのさ',
+        '物語の知られざる側面を明かすとき、崇高な道徳心が最高の知恵であることに気付くであろう'
+    );
+    //シートン
+    hInfos[n+1] = new heroInfo(
+        '1004',
+        '野バラは花を守るために、とげを身につけて武装した',
+        '野生動物には降伏の2字はない'
+    );
+    //伊能忠敬
+    hInfos[n+2] = new heroInfo(
+        '1005',
+        '人間は夢を持ち前へ歩き続ける限り、余生はいらない',
+        '後世の役に立つような、しっかりとした仕事がしたい'
+    );
+    //ピタゴラス
+    hInfos[n+3] = new heroInfo(
+        '1006',
+        '愛は理解の別名なり',
+        'よくできたと満足して休みなさい。そして他の人が君についてあれこれ何と言おうと言わせておけばよいのです'
+    );
+    console.log("hInfos.length="+hInfos.length);
+    
+        const heroImgs = [
+        // legend
+        '5001', '5002', '5003', '5004', '5005',
+        '5006', '5007', '5008', '5009', '5010',
+        '5011', '5012', '5013', '5014', '5015',
+        '5016', '5017', '5018', '5019', '5020',
+        '5021', '5022', '5023', '5024', '5025',
+        '5026', '5027', '5028', '5029', '5030',
+        '5031', '5032',
+        // Epic
+        '4001', '4002', '4003', '4004', '4005',
+        '4006', '4007', '4008', '4009', '4010',
+        '4011', '4012', '4013', '4014', '4015',
+        '4016', '4017', '4018', '4019', '4020',
+        '4021', '4022', '4023', '4024', '4025',
+        '4026', '4027', '4028', '4029', '4030',
+        '4031', '4032', '4033', '4034', '4035',
+        '4036', '4037', '4038', '4039', '4040',
+        '4041', '4042', '4043', '4044', '4045',
+        '4046', '4047', '4048', '4049', '4050',
+        '4051', '4052', '4053', '4054', '4055',
+        '4056', '4057', '4058',
+        // Rare
+        '3001', '3002', '3003', '3004', '3005',
+        '3006', '3007', '3008', '3009', '3010',
+        '3011', '3012', '3013', '3014', '3015',
+        '3016', '3017', '3018', '3019', '3020',
+        '3021', '3022', '3023', '3024', '3025',
+        '3026', '3027', '3028', '3029', '3030',
+        '3031', '3032', '3033', '3034', '3035',
+        '3036', '3037', '3038', '3039', '3040',
+        '3041', '3042', '3043', '3044', '3045',
+        '3046', '3047', '3048', '3049', '3050',
+        '3051', '3052', 
+        // Uncommon
+        '2001', '2002', '2003', '2004', '2005',
+        '2006', '2007', '2008', '2009', '2010',
+        '2011', '2012', '2013', '2014', '2015',
+        '2016', '2017', '2018', '2019', '2020',
+        '2021', '2022', '2023', '2024', '2025',
+        '2026', '2027', '2028', '2029', '2030',
+        '2031', '2032', '2033', '2034', '2035',
+        '2036', '2037', '2038', '2039', '2040',
+        '2041', '2042', '2043', '2044', '2045',
+        '2046', '2047', '2048', '2049', '2050',
+        // Common
+        '1001', '1002', '1003', '1004', '1005',
+        '1006', '1007', '1008',
+        // Novis
+        '10001', '10002', '10003', '10004', '10005',
+        '10006', '10007', '10008',      
+        ];
+        const nHIdx = getRandData() % hInfos.length;
+        const nHSel = getRandData() % 2;
+        var strQuot = hInfos[nHIdx].strQuot1;
+        if(nHSel>0) strQuot = hInfos[nHIdx].strQuot2;
+        // 文字列の差し替え
+        document.getElementById("hero_img").src = "https://www.mycryptoheroes.net/images/heroes/64/" + hInfos[nHIdx].imgID + ".png";
+    
+        let reqHeroTypeURL = "https://www.mycryptoheroes.net/metadata/heroType/";
+        let urlText = reqHeroTypeURL + hInfos[nHIdx].imgID;
+        console.log(urlText)
+        let request = new XMLHttpRequest();
+        request.open('GET', urlText);
+        request.responseType = 'json';
+        request.send();
+        request.onload = function()
+        {
+        var bDisp = false; 
+        const HeroType = request.response;
+        console.log("HeroType.name.ja="+HeroType.name.ja)
+        console.log("HeroType.rarity="+HeroType.rarity);
+        // 文字列の差し替え
+        document.getElementById("name").textContent = HeroType.name.ja;
+        document.getElementById("quot_str").textContent = strQuot;
+        // レアリティセット
+        let strAddClass = "";
+        switch(HeroType.rarity)
+        {
+            case 5: strAddClass = "legend"; break;
+            case 4: strAddClass = "epic"; break;
+            case 3: strAddClass = "rare"; break;
+            case 2: strAddClass = "uncommon"; break;
+            case 1: strAddClass = "common"; break;
+        }
+        // レアリティセット
+        const elemRare = document.createElement('span');
+        elemRare.className = "rarelity " + strAddClass;
+        document.getElementById("hero_rarity").appendChild(elemRare);
+        //document.getElementById("hero_rarity").apend(); += strAddClass;
+        };
+    
+        //urlText = "https://www.mycryptoheroes.net/metadata/hero/" + hInfos[nHIdx].imgID + "0001";
+        //console.log(urlText)
+        //let request2 = new XMLHttpRequest();
+        //request2.open('GET', urlText);
+        //request2.responseType = 'json';
+        //request2.send();
+        //request2.onload = function()
+        //{
+        //    const HeroInfo = request2.response;
+        //    console.log("HeroInfo.name="+HeroInfo.attributes.rarity);
+        //    console.log("HeroInfo.image="+HeroInfo.image);
+        //}
+    }
+    </script>
+</body>
+
+</html>
