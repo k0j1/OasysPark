@@ -155,7 +155,9 @@ function startCheckAssets(checkElem){
 
 // アセット情報更新
 function fnUpdateInfo(){
+    if(!window.location.href.includes("/inventory/")) return; // インベントリ画面でのみ実行
     if(gImgCheckSrc == null) return;
+
     let bFind = false;
     var detailViewerElems = document.getElementsByClassName("changeAssetDetailViewer");
     // マウスオーバー中のアイテムとイメージが一致しているかのチェック
@@ -221,6 +223,7 @@ const observer = new MutationObserver(() => {
     setTimeout(fnCheckInventory,INTERVAL_CHECK_TAG);
     //console.log('変更を検知');
 });
+
 // DOM変更を監視する設定
 observer.observe(document.body, {
     subtree: true,
@@ -228,6 +231,37 @@ observer.observe(document.body, {
     attributes: true,
     characterData: true
 });
+
+// function setupInventoryObserver() {
+//   if (!location.href.includes('inventory')) return; // クエストページでない場合は何もしない
+//   const target = document.querySelector(".inventoryPage");
+
+//   // 要素が存在するか確認
+//   if (target) {
+//     console.log('Inventory要素が画面内に入りました！');
+//     // DOM変更を検知
+//     const observer = new MutationObserver(() => {
+//         // ここにDOM変更時の処理を書く
+//         setTimeout(fnCheckInventory,INTERVAL_CHECK_TAG);
+//         //console.log('変更を検知');
+//     });
+
+//     // DOM変更を監視する設定
+//     observer.observe(document.body, {
+//         subtree: true,
+//         childList: true, 
+//         attributes: true,
+//         characterData: true
+//     });
+//   } else {
+//     console.log('Inventory要素を監視中...');
+//     // 要素が見つかるまで待機（例：少し待ってから再度試す）
+//     setTimeout(setupInventoryObserver, 1000);
+//   }
+// }
+
+// // 最初の実行
+// setupInventoryObserver();
 
 
 // グラフの描画
