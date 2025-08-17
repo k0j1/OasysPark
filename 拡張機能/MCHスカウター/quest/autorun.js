@@ -82,6 +82,15 @@ function clickAutoRun(event) {
     if(modalDlgElems == null) return;
     if(modalDlgElems.length == 0) return;
 
+    gFlagAutorun = 1; // 自動実行フラグをオンにする
+    clickStartQuest();
+}
+// （未使用）自動実行の確認画面表示
+function confirmAutorun(){
+    var modalDlgElems = document.getElementsByClassName('questDepartureModal');    
+    if(modalDlgElems == null) return;
+    if(modalDlgElems.length == 0) return;
+
     // タイトル取得
     let strTitle = getQuestTitle(modalDlgElems[0]);
     let strLevel = getQuestLevel(modalDlgElems[0]);
@@ -167,20 +176,20 @@ function addAutoRunButton(modalDlgElems) {
 function fnCheckQuest() {
     if (!location.href.includes('quest')) return; // クエストページでない場合は何もしない
 
-    var modalDlgElems = document.getElementsByClassName('questDepartureModal');    
-    // クエストダイアログが存在する場合は「スタミナ全消費ボタン」を追加
-    if(modalDlgElems){
-        switch(gFlagAutorun){
-            case 0: // 自動実行フラグがオフ
+    switch(gFlagAutorun){
+        case 0: // 自動実行フラグがオフ
+            var modalDlgElems = document.getElementsByClassName('questDepartureModal');    
+            // クエストダイアログが存在する場合は「スタミナ全消費ボタン」を追加
+            if(modalDlgElems){
                 addAutoRunButton(modalDlgElems);
-                break;
-            case 1: // 自動実行フラグがオン-SkipAll待ち
-                clickSkipAll();
-                break;
-            case 2: // 自動実行フラグがオン-クエストリトライ待ち
-                clickQuestRetry();
-                break;    
-        }
+            }
+            break;
+        case 1: // 自動実行フラグがオン-SkipAll待ち
+            clickSkipAll();
+            break;
+        case 2: // 自動実行フラグがオン-クエストリトライ待ち
+            clickQuestRetry();
+            break;    
     }
 }
 
@@ -190,6 +199,7 @@ const observerAutorun = new MutationObserver(() => {
     setTimeout(fnCheckQuest,INTERVAL_CHECK_TAG);
     //console.log('変更を検知');
 });
+
 // DOM変更を監視する設定
 observerAutorun.observe(document.body, {
     subtree: true,
